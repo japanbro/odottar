@@ -643,6 +643,7 @@ function renderPage(name){
   const st=ST[statusOf(e)],esc=name.replace(/'/g,"\\'"),liked=!!LIKED[e.name];
   const tags=tagsOf(e);
   const songVal=e.songs?e.songs:'<span style="color:var(--sub)">情報募集中（分かる方は教えてください）</span>';
+  const timeVal=timeOf(e),summaryVal=summaryOf(e);
   document.getElementById("pBody").innerHTML=`
     <div class="phero">
       <div class="pdt"><span class="bdg ${st.c}">${st.t}</span>${e.kai?" "+e.kai:""}</div>
