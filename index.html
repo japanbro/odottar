@@ -476,7 +476,7 @@ function addLike(name,btn){
   saveLikes();render();
 }
 let curShare=null;
-const inviteURL=e=>APP_URL?APP_URL+"#e/"+(e.id||encodeURIComponent(e.name)):e.site;
+const inviteURL=e=>APP_URL?APP_URL+"/event/"+(e.id||encodeURIComponent(e.name)):e.site;
 const dateSlash=e=>{if(!e.start)return"日程調査中";const f=x=>`${x.getFullYear()}/${String(x.getMonth()+1).padStart(2,"0")}/${String(x.getDate()).padStart(2,"0")}(${WD[x.getDay()]})`;return (e.end&&e.end!==e.start)?f(d(e.start))+"～"+f(d(e.end)):f(d(e.start));};
 const inviteText=e=>`【盆踊りのお誘い】\nShall we BONdance?\n${e.kai||""}${e.name}\n${dateSlash(e)}\n\nおどったー｜日本最大級の盆踊り情報サイト\n${inviteURL(e)}`;
 const curShareE=()=>VISIBLE.find(x=>x.name===curShare);
@@ -525,7 +525,6 @@ function drawCard(e){
   row("日程",longDate(e).replace("2026年 ",""));
   row("会場",e.venue);
   row("最寄",e.station+"・"+e.area);
-  row("時間",timeOf(e));
   // 下1/3（約1280〜1920）は背景のまま＝自分で文字入れ用
   return c;
 }
@@ -600,8 +599,8 @@ function filterTag(t){state.tag=t;closePage();render();window.scrollTo({top:docu
 
 /* ===== 個別ページ ===== */
 let pageName=null;
-function openPage(name){const e=DATA.find(x=>x.name===name);location.hash="#e/"+(e&&e.id?e.id:encodeURIComponent(name));route();}
-function closePage(){if(location.hash.startsWith("#e/"))history.back();else route();}
+function openPage(name){const e=DATA.find(x=>x.name===name);const id=(e&&e.id?e.id:encodeURIComponent(name));history.pushState({ev:id},"","/event/"+id);route();}
+function closePage(){history.pushState({},"","/");route();}
 const TIMEMAP={
 "サンシャインシティ納涼盆踊り大会":"19:00〜21:15（雨天中止）",
 "SHIBUYA MIYASHITA PARK BON DANCE":"13:00〜21:00（雨天中止）",
@@ -673,10 +672,13 @@ function renderPage(name){
 function pageLike(name){if(!LIKED[name]){LIKED[name]=true;saveLikes();hitRemote(name);toast("行きたいに追加しました");}renderPage(name);}
 function pageDone(name){if(DONE[name])delete DONE[name];else DONE[name]={y:2026};saveDone();renderPage(name);}
 function route(){
-  const h=location.hash;const pg=document.getElementById("page");
-  if(h.startsWith("#e/")){const key=h.slice(3);const e=DATA.find(x=>x.id===key)||DATA.find(x=>x.name===decodeURIComponent(key));if(e){renderPage(e.name);pg.classList.add("open");pg.scrollTop=0;return;}}
+  const pg=document.getElementById("page");
+  const m=location.pathname.match(/\/event\/([^\/]+)/);
+  let key=m?decodeURIComponent(m[1]):(location.hash.startsWith("#e/")?location.hash.slice(3):"");
+  if(key){const e=DATA.find(x=>x.id===key)||DATA.find(x=>x.name===decodeURIComponent(key));if(e){renderPage(e.name);pg.classList.add("open");pg.scrollTop=0;return;}}
   pg.classList.remove("open");
 }
+window.addEventListener("popstate",route);
 window.addEventListener("hashchange",route);
 
 function parseCSV(t){const rows=[];let row=[],cur="",q=false;
