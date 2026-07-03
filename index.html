@@ -427,7 +427,7 @@ function render(){
           <div class="t">${e.name}</div>
           <div class="s"><span class="bdg ${st.c}">${st.t}</span>${longDate(e)}・${e.station}</div>
         </div>
-        <button class="like ${liked?'on locked':''}" ${liked?'disabled':''} onclick="event.stopPropagation();addLike('${esc}',this)" aria-label="行きたい">
+        <button class="like ${liked?'on':''}" onclick="event.stopPropagation();addLike('${esc}',this)" aria-label="行きたい">
           ${heartSVG(liked)}<span class="hn">${likeCount(e)}</span>
         </button>
         <span class="exp">▾</span>
@@ -450,13 +450,9 @@ function showMore(){state.limit+=30;render();}
 function toggleDetail(el){el.closest(".item").classList.toggle("open");}
 function toggleSong(el){const box=el.closest(".detail").querySelector(".songs");const o=box.style.display!=="none";box.style.display=o?"none":"block";el.textContent=o?"♪ 踊れる曲":"♪ 閉じる";}
 function addLike(name,btn){
-  if(LIKED[name]){toast("すでに「行きたい」済みです");return;}
-  LIKED[name]=true;saveLikes();hitRemote(name);
-  toast("「行きたい」に追加しました♡（1回のみ）");
-  const tabSort=TABS.find(t=>t.id===state.tab).sort;
-  if(tabSort==="pop"||tabSort==="smart"||COUNTER_ENDPOINT){render();}
-  else{const e=VISIBLE.find(x=>x.name===name);btn.classList.add("on","locked");btn.disabled=true;
-    btn.querySelector("svg").outerHTML=heartSVG(true);btn.querySelector(".hn").textContent=likeCount(e);}
+  if(LIKED[name]){delete LIKED[name];toast("「行きたい」を取り消しました");}
+  else{LIKED[name]=true;hitRemote(name);toast("「行きたい」に追加しました");}
+  saveLikes();render();
 }
 let curShare=null;
 const inviteURL=e=>APP_URL?APP_URL+"#e/"+encodeURIComponent(e.name):e.site;
@@ -465,7 +461,7 @@ const inviteText=e=>`【盆踊りのお誘い】Shall we BONdance?\n${e.kai||""}
 const curShareE=()=>VISIBLE.find(x=>x.name===curShare);
 function shareSheet(name){curShare=name;const e=VISIBLE.find(x=>x.name===name);if(!e)return;
   document.getElementById("shName").textContent=`${e.name}｜${longDate(e)}`;
-  document.getElementById("nativeShareBtn").style.display=navigator.share?"block":"none";
+  
   document.getElementById("share").classList.add("open");}
 function closeShare(){document.getElementById("share").classList.remove("open");}
 function copyInvite(){const e=curShareE();if(!e)return;const t=inviteText(e);
@@ -614,7 +610,7 @@ function filterTag(t){state.tag=t;closePage();render();window.scrollTo({top:docu
 
 /* ===== 個別ページ ===== */
 let pageName=null;
-function openPage(name){location.hash="#e/"+encodeURIComponent(name);}
+function openPage(name){location.hash="#e/"+encodeURIComponent(name);route();}
 function closePage(){if(location.hash.startsWith("#e/"))history.back();else route();}
 const TIMEMAP={
 "サンシャインシティ納涼盆踊り大会":"19:00〜21:15（雨天中止）",
