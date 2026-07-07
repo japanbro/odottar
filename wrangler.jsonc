@@ -1,14 +1,15 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "odottar",
-  "compatibility_date": "2026-07-07",
-  "observability": {
-    "enabled": true
-  },
-  "assets": {
-    "directory": "."
-  },
-  "compatibility_flags": [
-    "nodejs_compat"
-  ]
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "odottar",
+	"compatibility_date": "2026-07-07",
+	"observability": {
+		"enabled": true
+	},
+	"assets": {
+		"directory": ".",
+		"not_found_handling": "single-page-application"
+	},
+	"compatibility_flags": [
+		"nodejs_compat"
+	]
 }
