@@ -238,11 +238,11 @@
   </header>
 <div style="background:var(--tint);border-bottom:1px solid var(--line2);padding:7px 12px;font-size:.72rem;color:#3a6f97;text-align:center"><b style="color:var(--accentD)">β版・東京エリア版</b>で公開中｜7月中旬、地域拡大の準備を進めています</div>
   <div class="hero" id="hero"></div>
-  <div class="adslot" id="ad1"></div>
   <div class="sortbar"><span id="count"></span><span id="orderLabel"></span></div>
   <div class="tagbar" id="tagbar"></div>
   <div class="list" id="list"></div>
   <div class="empty" id="empty" style="display:none"></div>
+  <div class="adslot" id="adBottom"></div>
   <footer class="foot">
     <a class="formlink" id="formFooter" href="#" target="_blank" rel="noopener">盆踊りの情報を追加・修正する（Googleフォーム）</a>
 <div style="margin-top:10px"><a class="formlink" href="/privacy.html">プライバシーポリシー・免責事項</a></div>
@@ -386,7 +386,7 @@ const TABS=[
   {id:"next",label:"来週", order:"開催日が近い順", sort:"date", f:inNextWeek},
   {id:"liked",label:"おきにいり",order:"行きたい数順",sort:"pop",f:e=>!!LIKED[e.name]},
 ];
-const state={tab:"all",limit:30};
+const state={tab:"all",limit:20};
 function currentList(){
   const tab=TABS.find(t=>t.id===state.tab);
   let l=VISIBLE.filter(e=>tab.f(e));
@@ -439,7 +439,7 @@ function render(){
     const n=VISIBLE.filter(t.f).length;
     return `<div class="tab ${t.id===state.tab?'on':''}" data-id="${t.id}">${t.label}<span class="n">${n}</span></div>`;
   }).join("");
-  document.querySelectorAll(".tab").forEach(el=>el.onclick=()=>{state.tab=el.dataset.id;state.limit=30;render();window.scrollTo({top:0})});
+  document.querySelectorAll(".tab").forEach(el=>el.onclick=()=>{state.tab=el.dataset.id;state.limit=20;render();window.scrollTo({top:0})});
   const list=currentList();
   document.getElementById("count").textContent=`${list.length}件`;
   document.getElementById("orderLabel").textContent="並び："+TABS.find(t=>t.id===state.tab).order;
@@ -473,9 +473,9 @@ function render(){
         </div>
       </div>
     </div>`;
-  }).join("")+(list.length>state.limit?'<div class="morebtn" onclick="showMore()">もっと見る（残り'+(list.length-state.limit)+'件）</div>':"");
+  }).join("")+(list.length>state.limit?'<div class="morebtn" onclick="showMore()">次の20件を表示（残り'+(list.length-state.limit)+'件）</div>':"");
 }
-function showMore(){state.limit+=30;render();}
+function showMore(){state.limit+=20;render();}
 function toggleDetail(el){el.closest(".item").classList.toggle("open");}
 function toggleSong(el){const box=el.closest(".detail").querySelector(".songs");const o=box.style.display!=="none";box.style.display=o?"none":"block";el.textContent=o?"♪ 踊れる曲":"♪ 閉じる";}
 function addLike(name,btn){
