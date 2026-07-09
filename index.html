@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2792766879613699"
+     crossorigin="anonymous"></script>
 <meta name="theme-color" content="#1da1f2">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -11,7 +13,6 @@
 <meta name="description" content="日本最大級の盆踊り情報サイト。2026年最新の盆踊り日程を掲載中。盆オドラーのための口コミサイト。">
 <meta property="og:title" content="おどったー｜日本最大級の盆踊り情報サイト｜2026年盆踊り日程一覧">
 <meta property="og:description" content="日本最大級の盆踊り情報サイト。2026年最新の盆踊り日程を掲載中。盆オドラーのための口コミサイト。">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2792766879613699" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -236,16 +237,14 @@
   <header class="bar" id="bar">
     <div class="tabs" id="tabs"></div>
   </header>
-<div style="background:var(--tint);border-bottom:1px solid var(--line2);padding:7px 12px;font-size:.72rem;color:#3a6f97;text-align:center"><b style="color:var(--accentD)">β版・東京エリア版</b>で公開中｜7月中旬、地域拡大の準備を進めています</div>
   <div class="hero" id="hero"></div>
+  <div class="adslot" id="ad1"></div>
   <div class="sortbar"><span id="count"></span><span id="orderLabel"></span></div>
   <div class="tagbar" id="tagbar"></div>
   <div class="list" id="list"></div>
   <div class="empty" id="empty" style="display:none"></div>
-  <div class="adslot" id="adBottom"></div>
   <footer class="foot">
     <a class="formlink" id="formFooter" href="#" target="_blank" rel="noopener">盆踊りの情報を追加・修正する（Googleフォーム）</a>
-<div style="margin-top:10px"><a class="formlink" href="/privacy.html">プライバシーポリシー・免責事項</a></div>
     <div class="footcredit">おどったー｜日本最大級の盆踊り情報サイト｜2026年盆踊り日程一覧</div>
   </footer>
 </div>
@@ -297,12 +296,12 @@
 </div>
 <div class="toast" id="toast"></div>
 <script>
-const COUNTER_ENDPOINT="";  /* Cloudflare WorkerのURLを設定すると いいね数合算が有効化。空なら無効(端末内カウントのみ)。例: "https://odottar-counter.xxx.workers.dev" */
+const COUNTER_ENDPOINT="https://xxx.workers.dev";
 /* Google AdSense。空なら広告なし。取得後にIDを設定。 */
-const ADSENSE_CLIENT="ca-pub-2792766879613699";
+const ADSENSE_CLIENT="ca-pub-2792766879613699";  /* 例: "ca-pub-1234567890123456" */
 const ADSENSE_SLOT="";
 /* おどったーの公開URL。設定すると誘いメッセージに露出。空なら主催サイトURL。 */
-const APP_URL="https://odottar.vercel.app";
+const APP_URL="https://odottar.com";
 /* 情報提供・修正のGoogleフォームURL。設定するとフッター/各ページ下部にリンク表示。 */
 const FORM_URL="https://forms.gle/wDaecLp71c8gWCuV6";
 const SHEET_CSV_URL="";
@@ -335,6 +334,201 @@ let DATA = [
  {name:"隅田川おどりフェスタ",kai:"",start:"",end:"",venue:"墨田区役所うるおい広場",station:"本所吾妻橋駅",area:"墨田区",scale:"中規模",feature:"例年8/23-24。エイサー・よさこい・自由参加盆踊り",songs:"",site:"https://www.enjoytokyo.jp/event/644246/",siteType:"ref",pop:110,status:"未定"},
  {name:"SHIBUYA MIYASHITA PARK BON DANCE",kai:"",start:"2026-09-26",end:"2026-09-27",venue:"MIYASHITA PARK 4階 渋谷区立宮下公園 芝生ひろば",station:"渋谷駅",area:"渋谷区",scale:"中規模",feature:"渋谷カルチャーと祭りの融合。13:00〜21:00（雨天中止）。入場無料",songs:"",site:"https://miyashita-bondance.jp/",siteType:"official",pop:220},
  {name:"納涼盆踊り大会（武蔵野市）",kai:"",start:"",end:"",venue:"武蔵野市立中央図書館前庭",station:"三鷹駅",area:"武蔵野市",scale:"地域",feature:"例年7月中旬。和太鼓演技・屋台。17:00〜19:00",songs:"",site:"https://www.enjoytokyo.jp/event/2022182/",siteType:"ref",pop:70,status:"未定"},
+ {"name": "ふるさと千川 ひろば", "start": "2026-06-05", "end": "2026-06-05", "venue": "ふるさと千川 ひろば", "station": "千川駅", "area": "豊島区", "feature": "踊り18:30〜21:00", "site": "https://senkawa.jp/4307", "siteType": "official", "pop": 0},
+ {"name": "鮫洲入江広場 ゆり園", "start": "2026-06-06", "end": "2026-06-06", "venue": "鮫洲入江広場 ゆり園", "station": "鮫洲・青物横丁駅", "area": "品川区", "feature": "踊り14:30〜16:00", "site": "https://shinagawa-kanko.or.jp/event/lily-samezu2026/", "siteType": "official", "pop": 0},
+ {"name": "品川区立宮前小学校及び宮前商店街周辺", "start": "2026-06-07", "end": "2026-06-07", "venue": "品川区立宮前小学校及び宮前商店街周辺", "station": "戸越銀座・下神明駅", "area": "品川区", "feature": "踊り14:00〜18:00／小雨決行", "site": "https://togoshi2.jugem.jp/", "siteType": "ref", "pop": 0},
+ {"name": "山王パークタワー公開空地", "start": "2026-06-13", "end": "2026-06-15", "venue": "山王パークタワー公開空地", "station": "赤坂・溜池山王駅", "area": "千代田区", "feature": "踊り18:30〜21:00／雨天中止", "site": "https://www.tenkamatsuri.jp/minyo/", "siteType": "official", "pop": 0},
+ {"name": "目黒区立東根小学校", "start": "2026-06-20", "end": "2026-06-20", "venue": "目黒区立東根小学校", "station": "駒沢大学・都立大学駅", "area": "目黒区", "feature": "踊り17:15〜20:00", "site": "https://higasine19.net/2026/05/30/6/", "siteType": "official", "pop": 0},
+ {"name": "五反野コミュニティ公園", "start": "2026-06-20", "end": "2026-06-20", "venue": "五反野コミュニティ公園", "station": "五反野駅", "area": "足立区", "feature": "踊り17:30〜20:00", "site": "https://nishiayase.jp/", "siteType": "official", "pop": 0},
+ {"name": "鷲在山長國寺", "start": "2026-06-21", "end": "2026-06-21", "venue": "鷲在山長國寺", "station": "三ノ輪・入谷駅", "area": "台東区", "feature": "踊り13:40〜", "site": "https://otorisama.jp/", "siteType": "official", "pop": 0},
+ {"name": "品川区立第二延山小学校 アリーナ", "start": "2026-06-21", "end": "2026-06-21", "venue": "品川区立第二延山小学校 アリーナ", "station": "旗の台駅", "area": "品川区", "feature": "踊り17:30〜20:00／土足禁(上履き持参)", "site": "http://bondance.s1002.xrea.com/2026/img/20260621.jpg", "siteType": "ref", "pop": 0},
+ {"name": "新宿住友ビル三角広場", "start": "2026-06-24", "end": "2026-06-25", "venue": "新宿住友ビル三角広場", "station": "都庁前・西新宿・新宿駅", "area": "新宿区", "feature": "踊り17:30〜22:00", "site": "https://www.sumitomo-sankakuhiroba.jp/matsuri202606.pdf", "siteType": "ref", "pop": 0},
+ {"name": "郡上おどりin青山 秩父宮ラグビー場 駐車場", "start": "2026-06-26", "end": "2026-06-26", "venue": "郡上おどりin青山 秩父宮ラグビー場 駐車場", "station": "外苑前駅", "area": "港区", "feature": "踊り17:00〜20:30", "site": "https://aoyama-gaienmae.or.jp/news/20260326/", "siteType": "official", "pop": 0},
+ {"name": "浅草六区ブロードウェイ(ドン・キホーテ 浅草店前のやぐら)", "start": "2026-06-27", "end": "2026-06-27", "venue": "浅草六区ブロードウェイ(ドン・キホーテ 浅草店前のやぐら)", "station": "浅草駅", "area": "台東区", "feature": "踊り18:00〜18:30", "site": "https://www.instagram.com/p/DYI5By1Afdc/", "siteType": "ref", "pop": 0},
+ {"name": "あさがお祭り盆踊り(入谷南公園)", "start": "2026-07-06", "end": "2026-07-08", "venue": "あさがお祭り盆踊り(入谷南公園)", "station": "入谷駅", "area": "台東区", "feature": "踊り19:00〜21:00", "site": "https://www.asagao-maturi.com/229/", "siteType": "official", "pop": 0},
+ {"name": "上池袋さくら公園", "start": "2026-07-10", "end": "2026-07-11", "venue": "上池袋さくら公園", "station": "北池袋・池袋駅", "area": "豊島区", "feature": "踊り19:00〜21:00", "site": "https://www.kamiike.org/webboard/", "siteType": "official", "pop": 0},
+ {"name": "大正大学 鴨台(おうだい)盆踊り", "start": "2026-07-10", "end": "2026-07-10", "venue": "大正大学 鴨台(おうだい)盆踊り", "station": "巣鴨・新庚申塚駅", "area": "豊島区", "feature": "踊り18:00〜20:00", "site": "https://x.com/bonodori_tais/status/2063246614505144588", "siteType": "ref", "pop": 0},
+ {"name": "萩中神社", "start": "2026-07-10", "end": "2026-07-11", "venue": "萩中神社", "station": "糀谷駅", "area": "大田区", "feature": "踊り18:30〜20:30／荒天順延又中止", "site": "https://otakushoren.com/event/151944", "siteType": "official", "pop": 0},
+ {"name": "稗田公園", "start": "2026-07-10", "end": "2026-07-11", "venue": "稗田公園", "station": "北綾瀬・亀有駅", "area": "足立区", "feature": "踊り18:00〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/higashiayase20-8.html", "siteType": "official", "pop": 0},
+ {"name": "東谷北野神社", "start": "2026-07-11", "end": "2026-07-11", "venue": "東谷北野神社", "station": "馬込・西馬込・大森駅", "area": "大田区", "feature": "踊り19:00〜", "site": "https://otakushoren.com/event/152394", "siteType": "official", "pop": 0},
+ {"name": "大井競馬場第一駐車場", "start": "2026-07-11", "end": "2026-07-11", "venue": "大井競馬場第一駐車場", "station": "大井競馬場前・立会川駅", "area": "品川区", "feature": "雨天の場合は7月12日へ順延", "site": "https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-kuyakusyo/shisetsu-kuyakusyo-chiiki/hpg000017088.html", "siteType": "official", "pop": 0},
+ {"name": "世田谷区立三軒茶屋小学校", "start": "2026-07-11", "end": "2026-07-11", "venue": "世田谷区立三軒茶屋小学校", "station": "三軒茶屋駅", "area": "世田谷区", "feature": "踊り17:30〜", "site": "https://www.city.setagaya.lg.jp/documents/2043/wakuwaku2026.pdf", "siteType": "ref", "pop": 0},
+ {"name": "晴海ふ頭公園", "start": "2026-07-11", "end": "2026-07-12", "venue": "晴海ふ頭公園", "station": "勝どき駅", "area": "中央区", "feature": "踊り18:30〜20:30", "site": "https://www.harumiflag.org/summerfestival", "siteType": "official", "pop": 0},
+ {"name": "蛇窪神社(上神明天祖神社)", "start": "2026-07-11", "end": "2026-07-11", "venue": "蛇窪神社(上神明天祖神社)", "station": "中延駅", "area": "品川区", "feature": "踊り17:00〜18:00", "site": "https://hebikubo.jp/", "siteType": "official", "pop": 0},
+ {"name": "亀有リリオパーク", "start": "2026-07-11", "end": "2026-07-12", "venue": "亀有リリオパーク", "station": "亀有駅", "area": "葛飾区", "feature": "踊り18:30〜21:00", "site": "https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/028/707/20260619.pdf", "siteType": "ref", "pop": 0},
+ {"name": "中田出世稲荷(下赤塚駅前交番裏)", "start": "2026-07-11", "end": "2026-07-12", "venue": "中田出世稲荷(下赤塚駅前交番裏)", "station": "下赤塚・赤塚駅", "area": "板橋区", "feature": "踊り18:00〜／(雨天中止)", "site": "https://kajiyamachokai.com/", "siteType": "official", "pop": 0},
+ {"name": "羽田神社境内", "start": "2026-07-13", "end": "2026-07-15", "venue": "羽田神社境内", "station": "大鳥居駅", "area": "大田区", "feature": "踊り19:00〜21:00", "site": "https://otakushoren.com/event/152253", "siteType": "official", "pop": 0},
+ {"name": "太宗寺境内", "start": "2026-07-13", "end": "2026-07-15", "venue": "太宗寺境内", "station": "新宿御苑前・新宿3丁目駅", "area": "新宿区", "feature": "踊り18:30〜21:00", "site": "http://bondance.s1002.xrea.com/2026/img/2026071315.jpg", "siteType": "ref", "pop": 0},
+ {"name": "祐天寺境内", "start": "2026-07-16", "end": "2026-07-18", "venue": "祐天寺境内", "station": "祐天寺駅", "area": "目黒区", "feature": "踊り17:30〜21:00／16日･17日が雨天中止の場合は、19日に順延します。", "site": "http://www.yutenji.or.jp/info/gyouji/page-month-7/", "siteType": "official", "pop": 0},
+ {"name": "中央区立月島第一小学校", "start": "2026-07-17", "end": "2026-07-17", "venue": "中央区立月島第一小学校", "station": "月島駅", "area": "中央区", "feature": "踊り19:00〜20:30", "site": "https://www.tsuki1-pta.tokyo/post/", "siteType": "official", "pop": 0},
+ {"name": "旭児童遊園", "start": "2026-07-17", "end": "2026-07-18", "venue": "旭児童遊園", "station": "大鳥居駅", "area": "大田区", "feature": "踊り18:30〜20:30／雨天中止", "site": "https://higashi-kojiya456.com/calendar/", "siteType": "official", "pop": 0},
+ {"name": "祖師谷神明社", "start": "2026-07-17", "end": "2026-07-18", "venue": "祖師谷神明社", "station": "祖師ケ谷大蔵駅", "area": "世田谷区", "feature": "踊り19:00〜21:00", "site": "https://soshigaya.com/bon-dance-2026/", "siteType": "official", "pop": 0},
+ {"name": "南六郷一丁目町会広場", "start": "2026-07-17", "end": "2026-07-18", "venue": "南六郷一丁目町会広場", "station": "雑色・糀谷駅", "area": "大田区", "feature": "踊り18:30〜21:00／雨天中止で順延はしません", "site": "https://www.facebook.com/p/x100094394490478/", "siteType": "ref", "pop": 0},
+ {"name": "土支田八幡宮", "start": "2026-07-17", "end": "2026-07-18", "venue": "土支田八幡宮", "station": "光が丘駅", "area": "練馬区", "feature": "踊り18:30〜21:00", "site": "http://www.senbadaiko.com/schedule/index.html", "siteType": "official", "pop": 0},
+ {"name": "南田中稲荷天祖神社", "start": "2026-07-17", "end": "2026-07-18", "venue": "南田中稲荷天祖神社", "station": "石神井公園・練馬高野台駅", "area": "練馬区", "feature": "踊り18:00〜", "site": "http://www.senbadaiko.com/schedule/index.html", "siteType": "official", "pop": 0},
+ {"name": "関原中央公園(防災広場)", "start": "2026-07-17", "end": "2026-07-18", "venue": "関原中央公園(防災広場)", "station": "梅島駅", "area": "足立区", "feature": "踊り18:30〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "京橋公園", "start": "2026-07-17", "end": "2026-07-18", "venue": "京橋公園", "station": "新富町・宝町駅", "area": "中央区", "feature": "踊り18:30〜21:00", "site": "https://x.com/STMchokai/status/2069970501838274998/photo/1", "siteType": "ref", "pop": 0},
+ {"name": "鳩森八幡神社", "start": "2026-07-17", "end": "2026-07-18", "venue": "鳩森八幡神社", "station": "千駄ヶ谷・国立競技場・北参道駅", "area": "渋谷区", "feature": "踊り16:00〜21:00", "site": "https://www.sendagaya-bonodori.tokyo/", "siteType": "official", "pop": 0},
+ {"name": "上落合西公園", "start": "2026-07-17", "end": "2026-07-18", "venue": "上落合西公園", "station": "落合・中井・東中野駅", "area": "新宿区", "feature": "踊り19:00〜21:00／予備日19日", "site": "https://ameblo.jp/soumu-buchou/entry-12969578083.html", "siteType": "ref", "pop": 0},
+ {"name": "木場二丁目公園", "start": "2026-07-17", "end": "2026-07-17", "venue": "木場二丁目公園", "station": "木場・門前仲町駅", "area": "江東区", "feature": "踊り18:00〜21:00／荒天･雨天の場合中止", "site": "https://minamisuna1.com/37573/", "siteType": "official", "pop": 0},
+ {"name": "巣鴨駅前南口ロータリー", "start": "2026-07-17", "end": "2026-07-19", "venue": "巣鴨駅前南口ロータリー", "station": "巣鴨駅", "area": "豊島区", "feature": "踊り18:30〜21:00／19日雨天の場合、翌日に順延", "site": "http://suichishoutenkai.com/event/bonodori_2026", "siteType": "official", "pop": 0},
+ {"name": "大和町八幡神社", "start": "2026-07-18", "end": "2026-07-18", "venue": "大和町八幡神社", "station": "野方駅", "area": "中野区", "feature": "踊り15:00〜20:30／雨天時は翌日", "site": "http://daibon.jp/", "siteType": "official", "pop": 0},
+ {"name": "伊興公園", "start": "2026-07-18", "end": "2026-07-18", "venue": "伊興公園", "station": "竹ノ塚駅", "area": "足立区", "feature": "踊り18:00〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "佐竹商店街アーケード下", "start": "2026-07-18", "end": "2026-07-18", "venue": "佐竹商店街アーケード下", "station": "新御徒町・仲御徒町・御徒町駅", "area": "台東区", "feature": "踊り15:00〜19:00／順延19日", "site": "https://satakeshotengai.com/satakeodori/", "siteType": "official", "pop": 0},
+ {"name": "一ツ家中央公園(タコ公園)", "start": "2026-07-18", "end": "2026-07-18", "venue": "一ツ家中央公園(タコ公園)", "station": "六町駅", "area": "足立区", "feature": "踊り18:00〜21:00／雨天延期7月19日(日曜日)", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "品川区立第三日野小学校", "start": "2026-07-18", "end": "2026-07-18", "venue": "品川区立第三日野小学校", "station": "高輪台駅", "area": "品川区", "feature": "踊り17:00〜18:00", "site": "https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-kuyakusyo/shisetsu-kuyakusyo-chiiki/hpg000017088.html", "siteType": "official", "pop": 0},
+ {"name": "新宿区立清水川橋公園", "start": "2026-07-18", "end": "2026-07-18", "venue": "新宿区立清水川橋公園", "station": "高田馬場駅", "area": "新宿区", "feature": "踊り17:30〜21:00", "site": "https://www.city.shinjuku.lg.jp/kusei/kashiwagi01_000001_00037.html", "siteType": "official", "pop": 0},
+ {"name": "世田谷区立八幡小学校", "start": "2026-07-18", "end": "2026-07-18", "venue": "世田谷区立八幡小学校", "station": "自由が丘・奥沢駅", "area": "世田谷区", "feature": "踊り17:00〜19:20／雨天中止", "site": "https://www.city.setagaya.lg.jp/documents/26463/all.pdf", "siteType": "ref", "pop": 0},
+ {"name": "柳橋中央通り･江戸通り柳橋2丁目交差点付近", "start": "2026-07-18", "end": "2026-07-18", "venue": "柳橋中央通り･江戸通り柳橋2丁目交差点付近", "station": "浅草橋駅", "area": "台東区", "feature": "踊り18:00〜20:00", "site": "https://asakusabashi.tokyo/", "siteType": "official", "pop": 0},
+ {"name": "練馬区立光和小学校", "start": "2026-07-18", "end": "2026-07-18", "venue": "練馬区立光和小学校", "station": "石神井公園駅", "area": "練馬区", "feature": "踊り17:30〜／雨天19日(月)", "site": "http://www.senbadaiko.com/schedule/index.html", "siteType": "official", "pop": 0},
+ {"name": "練馬区立泉新小学校", "start": "2026-07-18", "end": "2026-07-18", "venue": "練馬区立泉新小学校", "station": "石神井公園駅", "area": "練馬区", "feature": "雨天19日(月)", "site": "http://www.senbadaiko.com/schedule/index.html", "siteType": "official", "pop": 0},
+ {"name": "尾竹橋公園", "start": "2026-07-18", "end": "2026-07-18", "venue": "尾竹橋公園", "station": "町屋駅", "area": "足立区", "feature": "踊り18:00〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "四谷ひろばグランド(旧新宿区立四谷第四小学校)", "start": "2026-07-18", "end": "2026-07-19", "venue": "四谷ひろばグランド(旧新宿区立四谷第四小学校)", "station": "四谷三丁目・曙橋駅", "area": "新宿区", "feature": "踊り18:00〜21:00／小雨決行(雨天順延)", "site": "https://www4.hp-ez.com/hp/fes/page2", "siteType": "ref", "pop": 0},
+ {"name": "新井薬師公園", "start": "2026-07-18", "end": "2026-07-19", "venue": "新井薬師公園", "station": "新井薬師駅", "area": "中野区", "feature": "踊り18:00〜21:00", "site": "https://www.ai-road.com/bonodori/", "siteType": "official", "pop": 0},
+ {"name": "松江二丁目児童公園(平和公園)", "start": "2026-07-18", "end": "2026-07-19", "venue": "松江二丁目児童公園(平和公園)", "station": "一之江・新小岩駅", "area": "江戸川区", "feature": "踊り18:00〜21:00", "site": "https://matsu2.sakura.ne.jp/99_blank020.html", "siteType": "official", "pop": 0},
+ {"name": "伊興ファミリー公園", "start": "2026-07-18", "end": "2026-07-19", "venue": "伊興ファミリー公園", "station": "舎人公園・竹ノ塚駅", "area": "足立区", "feature": "順延なし", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/ikou.html", "siteType": "official", "pop": 0},
+ {"name": "城山公園", "start": "2026-07-18", "end": "2026-07-19", "venue": "城山公園", "station": "", "area": "中野区", "feature": "踊り19:00〜21:00／雨天中止    城山公園    JR中央線｢高円寺｣･｢中野｣", "site": "https://www.facebook.com/profile.php?id=100063550898293", "siteType": "ref", "pop": 0},
+ {"name": "佐野第二公園", "start": "2026-07-18", "end": "2026-07-19", "venue": "佐野第二公園", "station": "北綾瀬駅", "area": "足立区", "feature": "踊り18:30〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "品川区立杜松ホーム", "start": "2026-07-18", "end": "2026-07-18", "venue": "品川区立杜松ホーム", "station": "下神明駅", "area": "品川区", "feature": "踊り19:00〜", "site": "https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-kuyakusyo/shisetsu-kuyakusyo-chiiki/hpg000017088.html", "siteType": "official", "pop": 0},
+ {"name": "深川ギャザリアセンター広場", "start": "2026-07-18", "end": "2026-07-19", "venue": "深川ギャザリアセンター広場", "station": "木場駅", "area": "江東区", "feature": "踊り18:00〜20:30／雨天中止", "site": "https://www.fujikura.co.jp/news/pressrelease/20260622mit.html", "siteType": "official", "pop": 0},
+ {"name": "大森北グリーンベルト", "start": "2026-07-18", "end": "2026-07-19", "venue": "大森北グリーンベルト", "station": "大森駅", "area": "大田区", "feature": "踊り18:00〜20:30／雨天中止", "site": "https://otakushoren.com/event/140645", "siteType": "official", "pop": 0},
+ {"name": "三峰公園", "start": "2026-07-18", "end": "2026-07-19", "venue": "三峰公園", "station": "祖師ヶ谷大蔵駅", "area": "世田谷区", "feature": "踊り18:00〜20:00", "site": "https://www.kinutamachi.jp/archive/2026/0621974/", "siteType": "official", "pop": 0},
+ {"name": "廻沢稲荷神社", "start": "2026-07-18", "end": "2026-07-19", "venue": "廻沢稲荷神社", "station": "祖師ヶ谷大蔵・千歳烏山・芦花公園駅", "area": "世田谷区", "feature": "", "site": "https://www.city.setagaya.lg.jp/documents/2043/wakuwaku2026.pdf", "siteType": "ref", "pop": 0},
+ {"name": "希望ヶ丘団地内広場(テニスコート)", "start": "2026-07-18", "end": "2026-07-19", "venue": "希望ヶ丘団地内広場(テニスコート)", "station": "千歳船橋・八幡山駅", "area": "世田谷区", "feature": "", "site": "https://www.city.setagaya.lg.jp/documents/2043/wakuwaku2026.pdf", "siteType": "ref", "pop": 0},
+ {"name": "御園神社", "start": "2026-07-18", "end": "2026-07-19", "venue": "御園神社", "station": "蓮沼・蒲田駅", "area": "大田区", "feature": "踊り19:00〜21:00", "site": "https://otakushoren.com/event/140561", "siteType": "official", "pop": 0},
+ {"name": "西沼公園", "start": "2026-07-18", "end": "2026-07-19", "venue": "西沼公園", "station": "綾瀬・亀有駅", "area": "足立区", "feature": "踊り18:00〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/higashiayase20-8.html", "siteType": "official", "pop": 0},
+ {"name": "都立東綾瀬公園", "start": "2026-07-18", "end": "2026-07-19", "venue": "都立東綾瀬公園", "station": "北綾瀬駅", "area": "足立区", "feature": "踊り18:00〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/higashiayase20-8.html", "siteType": "official", "pop": 0},
+ {"name": "東椿公園", "start": "2026-07-18", "end": "2026-07-19", "venue": "東椿公園", "station": "西新井大師西・谷在家駅", "area": "足立区", "feature": "踊り17:00〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "皿沼公園", "start": "2026-07-18", "end": "2026-07-19", "venue": "皿沼公園", "station": "谷在家駅", "area": "足立区", "feature": "踊り18:00〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "薭田神社", "start": "2026-07-18", "end": "2026-07-19", "venue": "薭田神社", "station": "京急蒲田・蒲田駅", "area": "大田区", "feature": "踊り19:00〜20:00", "site": "https://otakushoren.com/event/164219", "siteType": "official", "pop": 0},
+ {"name": "若宮八幡神社前", "start": "2026-07-18", "end": "2026-07-19", "venue": "若宮八幡神社前", "station": "四ツ木・八広駅", "area": "葛飾区", "feature": "踊り18:30〜21:00", "site": "https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/028/707/20260619.pdf", "siteType": "ref", "pop": 0},
+ {"name": "船路橋児童遊園前広場(五十嵐冷蔵前)", "start": "2026-07-18", "end": "2026-07-19", "venue": "船路橋児童遊園前広場(五十嵐冷蔵前)", "station": "三田・田町駅", "area": "港区", "feature": "踊り18:00〜21:00", "site": "https://www.city.minato.tokyo.jp/documents/179419/20260630141053.pdf", "siteType": "ref", "pop": 0},
+ {"name": "池袋本町公園", "start": "2026-07-18", "end": "2026-07-19", "venue": "池袋本町公園", "station": "北池袋駅", "area": "豊島区", "feature": "踊り18:30〜21:30", "site": "https://www.city.toshima.lg.jp/documents/56995/20260701_all.pdf", "siteType": "ref", "pop": 0},
+ {"name": "千早四丁目公園", "start": "2026-07-18", "end": "2026-07-19", "venue": "千早四丁目公園", "station": "千川駅", "area": "豊島区", "feature": "踊り17:00〜21:00", "site": "https://www.city.toshima.lg.jp/documents/56995/20260701_all.pdf", "siteType": "ref", "pop": 0},
+ {"name": "豊島区立西巣鴨小学校", "start": "2026-07-18", "end": "2026-07-19", "venue": "豊島区立西巣鴨小学校", "station": "庚申塚・巣鴨新田駅", "area": "豊島区", "feature": "踊り18:30〜21:00", "site": "https://www.city.toshima.lg.jp/documents/56995/20260701_all.pdf", "siteType": "ref", "pop": 0},
+ {"name": "江東区立深川第二中学校", "start": "2026-07-18", "end": "2026-07-19", "venue": "江東区立深川第二中学校", "station": "門前仲町駅", "area": "江東区", "feature": "踊り18:00〜20:45", "site": "https://koto.keizai.biz/column/15/", "siteType": "official", "pop": 0},
+ {"name": "江東区立臨海小学校･公園", "start": "2026-07-18", "end": "2026-07-19", "venue": "江東区立臨海小学校･公園", "station": "門前仲町駅", "area": "江東区", "feature": "踊り18:00〜20:00", "site": "https://f-kurashi.tokyo/rinkaibonodori/", "siteType": "official", "pop": 0},
+ {"name": "森下公園", "start": "2026-07-18", "end": "2026-07-19", "venue": "森下公園", "station": "森下駅", "area": "江東区", "feature": "踊り18:30〜21:00", "site": "https://minamisuna1.com/37573/", "siteType": "official", "pop": 0},
+ {"name": "篠塚稲荷神社", "start": "2026-07-18", "end": "2026-07-18", "venue": "篠塚稲荷神社", "station": "下赤塚駅", "area": "板橋区", "feature": "踊り18:00〜21:00／何れも小雨決行・雨天中止", "site": "https://shinogayato.com/", "siteType": "official", "pop": 0},
+ {"name": "みらい館大明", "start": "2026-07-18", "end": "2026-07-18", "venue": "みらい館大明", "station": "要町・池袋駅", "area": "豊島区", "feature": "踊り17:30〜20:30／雨天決行", "site": "https://www.city.toshima.lg.jp/documents/56995/20260701_all.pdf", "siteType": "ref", "pop": 0},
+ {"name": "品川学園", "start": "2026-07-19", "end": "2026-07-19", "venue": "品川学園", "station": "新馬場駅", "area": "品川区", "feature": "踊り17:00〜19:00", "site": "https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-kuyakusyo/shisetsu-kuyakusyo-chiiki/hpg000017088.html", "siteType": "official", "pop": 0},
+ {"name": "新宿区立下落合公園", "start": "2026-07-19", "end": "2026-07-19", "venue": "新宿区立下落合公園", "station": "目白・椎名町駅", "area": "新宿区", "feature": "踊り18:00〜21:00", "site": "https://www.city.shinjuku.lg.jp/kusei/kashiwagi01_000001_00037.html", "siteType": "official", "pop": 0},
+ {"name": "大蔵氷川神社", "start": "2026-07-19", "end": "2026-07-19", "venue": "大蔵氷川神社", "station": "成城学園前・永安寺前駅", "area": "世田谷区", "feature": "踊り19:00〜21:00", "site": "https://www.city.setagaya.lg.jp/documents/2043/wakuwaku2026.pdf", "siteType": "ref", "pop": 0},
+ {"name": "椿ひがし公園", "start": "2026-07-19", "end": "2026-07-19", "venue": "椿ひがし公園", "station": "瑞江駅", "area": "江戸川区", "feature": "踊り17:00〜21:00", "site": "https://www.city.edogawa.tokyo.jp/e036/kurashi/chiikicommunity/johokyoku/tobu/event/toubutikubonnodori.html", "siteType": "official", "pop": 0},
+ {"name": "山王神社", "start": "2026-07-19", "end": "2026-07-19", "venue": "山王神社", "station": "瑞江・一之江駅", "area": "江戸川区", "feature": "踊り17:00〜20:00", "site": "https://www.city.edogawa.tokyo.jp/e036/kurashi/chiikicommunity/johokyoku/tobu/event/toubutikubonnodori.html", "siteType": "official", "pop": 0},
+ {"name": "尾久橋スカイハイツ敷地内", "start": "2026-07-19", "end": "2026-07-19", "venue": "尾久橋スカイハイツ敷地内", "station": "足立小台駅", "area": "足立区", "feature": "踊り18:00〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "りそな銀行 神楽坂支店前", "start": "2026-07-19", "end": "2026-07-20", "venue": "りそな銀行 神楽坂支店前", "station": "神楽坂・牛込神楽坂駅", "area": "新宿区", "feature": "踊り18:00〜20:00", "site": "https://www.kagurazaka-6.com/", "siteType": "official", "pop": 0},
+ {"name": "友愛十字会中庭", "start": "2026-07-23", "end": "2026-07-23", "venue": "友愛十字会中庭", "station": "成城学園前駅", "area": "世田谷区", "feature": "踊り18:00〜20:00", "site": "https://www.city.setagaya.lg.jp/documents/2043/wakuwaku2026.pdf", "siteType": "ref", "pop": 0},
+ {"name": "大盆踊り(柳通り)", "start": "2026-07-23", "end": "2026-07-24", "venue": "大盆踊り(柳通り)", "station": "新橋駅", "area": "港区", "feature": "踊り18:30〜", "site": "https://www.city.minato.tokyo.jp/documents/179419/20260630141053.pdf", "siteType": "ref", "pop": 0},
+ {"name": "浄土寺", "start": "2026-07-23", "end": "2026-07-24", "venue": "浄土寺", "station": "赤坂・赤坂見附駅", "area": "港区", "feature": "踊り18:30〜21:00", "site": "https://shin5-yama.wixsite.com/akasakashin5choukai", "siteType": "ref", "pop": 0},
+ {"name": "浦守稲荷神社", "start": "2026-07-23", "end": "2026-07-24", "venue": "浦守稲荷神社", "station": "梅屋敷駅", "area": "大田区", "feature": "踊り19:00〜21:00", "site": "https://otakushoren.com/event/152793", "siteType": "official", "pop": 0},
+ {"name": "京王線芦花公園駅前ロータリー", "start": "2026-07-24", "end": "2026-07-24", "venue": "京王線芦花公園駅前ロータリー", "station": "芦花公園駅", "area": "世田谷区", "feature": "踊り17:00〜20:30", "site": "https://www.city.setagaya.lg.jp/documents/33864/all.pdf", "siteType": "ref", "pop": 0},
+ {"name": "鬼子母神", "start": "2026-07-24", "end": "2026-07-25", "venue": "鬼子母神", "station": "鬼子母神前・目白駅", "area": "豊島区", "feature": "踊り19:00〜21:00", "site": "https://www.homyoji.or.jp/kishimojin/event/", "siteType": "official", "pop": 0},
+ {"name": "文泉公園", "start": "2026-07-24", "end": "2026-07-25", "venue": "文泉公園", "station": "亀戸・錦糸町・亀戸水神駅", "area": "江東区", "feature": "踊り17:00〜21:30", "site": "https://minamisuna1.com/37573/", "siteType": "official", "pop": 0},
+ {"name": "池尻稲荷神社", "start": "2026-07-24", "end": "2026-07-25", "venue": "池尻稲荷神社", "station": "池尻大橋駅", "area": "世田谷区", "feature": "踊り18:00〜21:00／雨天の際は、翌日に延期", "site": "https://www.city.setagaya.lg.jp/documents/2043/wakuwaku2026.pdf", "siteType": "ref", "pop": 0},
+ {"name": "二子玉川西地区ふれあい広場(二子玉川商店街入り口近く、国道高架下)", "start": "2026-07-24", "end": "2026-07-25", "venue": "二子玉川西地区ふれあい広場(二子玉川商店街入り口近く、国道高架下)", "station": "二子玉川駅", "area": "世田谷区", "feature": "踊り19:00〜21:00", "site": "https://setagayatamagawa.com/", "siteType": "official", "pop": 0},
+ {"name": "砧八丁目児童遊園", "start": "2026-07-24", "end": "2026-07-25", "venue": "砧八丁目児童遊園", "station": "祖師ケ谷大蔵駅", "area": "世田谷区", "feature": "踊り18:00〜20:30／雨天中止", "site": "https://www.city.setagaya.lg.jp/documents/891/168gou_5.pdf", "siteType": "ref", "pop": 0},
+ {"name": "瑞江公園", "start": "2026-07-24", "end": "2026-07-24", "venue": "瑞江公園", "station": "瑞江駅", "area": "江戸川区", "feature": "踊り18:00〜21:00", "site": "https://www.city.edogawa.tokyo.jp/e036/kurashi/chiikicommunity/johokyoku/tobu/event/toubutikubonnodori.html", "siteType": "official", "pop": 0},
+ {"name": "宮元公園", "start": "2026-07-24", "end": "2026-07-25", "venue": "宮元公園", "station": "綾瀬駅", "area": "足立区", "feature": "踊り18:30〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/higashiayase20-8.html", "siteType": "official", "pop": 0},
+ {"name": "北野公園", "start": "2026-07-24", "end": "2026-07-25", "venue": "北野公園", "station": "綾瀬駅", "area": "足立区", "feature": "踊り19:00〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/higashiayase20-8.html", "siteType": "official", "pop": 0},
+ {"name": "糀屋氷川神社", "start": "2026-07-24", "end": "2026-07-25", "venue": "糀屋氷川神社", "station": "王子神谷駅", "area": "足立区", "feature": "踊り17:00〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "上落合職員防災住宅", "start": "2026-07-24", "end": "2026-07-25", "venue": "上落合職員防災住宅", "station": "落合・中井駅", "area": "新宿区", "feature": "踊り18:30〜21:00", "site": "https://ochi2.jimdofree.com/", "siteType": "ref", "pop": 0},
+ {"name": "高島平五丁目第二公園", "start": "2026-07-24", "end": "2026-07-25", "venue": "高島平五丁目第二公園", "station": "西高島平駅", "area": "板橋区", "feature": "踊り18:00〜21:00", "site": "https://sites.google.com/view/takashima-choukai/home", "siteType": "official", "pop": 0},
+ {"name": "東京パークサイドビル前広場", "start": "2026-07-25", "end": "2026-07-25", "venue": "東京パークサイドビル前広場", "station": "木場駅", "area": "江東区", "feature": "踊り17:30〜21:00", "site": "https://www.kcf.or.jp/cms/files/pdf/original/51310.pdf", "siteType": "ref", "pop": 0},
+ {"name": "緑が丘児童公園", "start": "2026-07-25", "end": "2026-07-25", "venue": "緑が丘児童公園", "station": "緑が丘・自由が丘駅", "area": "目黒区", "feature": "踊り17:30〜20:00／雨天中止", "site": "https://www.midorigaoka.online/news", "siteType": "official", "pop": 0},
+ {"name": "足立区立東伊興小学校", "start": "2026-07-25", "end": "2026-07-25", "venue": "足立区立東伊興小学校", "station": "竹ノ塚・舎人駅", "area": "足立区", "feature": "踊り18:00〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "深沢公園", "start": "2026-07-25", "end": "2026-07-25", "venue": "深沢公園", "station": "尾山台駅", "area": "世田谷区", "feature": "踊り17:00〜20:30", "site": "https://www.city.setagaya.lg.jp/documents/2043/wakuwaku2026.pdf", "siteType": "ref", "pop": 0},
+ {"name": "横根稲荷神社", "start": "2026-07-25", "end": "2026-07-25", "venue": "横根稲荷神社", "station": "祖師谷大蔵駅", "area": "世田谷区", "feature": "踊り18:30〜21:00", "site": "https://www.city.setagaya.lg.jp/documents/891/168gou_5.pdf", "siteType": "ref", "pop": 0},
+ {"name": "妙法寺", "start": "2026-07-25", "end": "2026-07-25", "venue": "妙法寺", "station": "成城学園前駅", "area": "世田谷区", "feature": "踊り18:00〜20:00", "site": "https://www.city.setagaya.lg.jp/documents/891/168gou_5.pdf", "siteType": "ref", "pop": 0},
+ {"name": "江戸川区立下鎌田小学校", "start": "2026-07-25", "end": "2026-07-25", "venue": "江戸川区立下鎌田小学校", "station": "瑞江駅", "area": "江戸川区", "feature": "踊り17:00〜20:00", "site": "https://www.city.edogawa.tokyo.jp/e036/kurashi/chiikicommunity/johokyoku/tobu/event/toubutikubonnodori.html", "siteType": "official", "pop": 0},
+ {"name": "南篠崎公園", "start": "2026-07-25", "end": "2026-07-25", "venue": "南篠崎公園", "station": "瑞江駅", "area": "江戸川区", "feature": "踊り17:00〜21:00", "site": "https://www.city.edogawa.tokyo.jp/e036/kurashi/chiikicommunity/johokyoku/tobu/event/toubutikubonnodori.html", "siteType": "official", "pop": 0},
+ {"name": "都立東綾瀬公園 パークタウン東綾瀬3号棟東側", "start": "2026-07-25", "end": "2026-07-25", "venue": "都立東綾瀬公園 パークタウン東綾瀬3号棟東側", "station": "北綾瀬駅", "area": "足立区", "feature": "踊り18:00〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/higashiayase20-8.html", "siteType": "official", "pop": 0},
+ {"name": "扇一丁目親栄児童遊園", "start": "2026-07-25", "end": "2026-07-25", "venue": "扇一丁目親栄児童遊園", "station": "扇大橋・足立小台駅", "area": "足立区", "feature": "踊り17:00〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "宝町八幡神社", "start": "2026-07-25", "end": "2026-07-25", "venue": "宝町八幡神社", "station": "お花茶屋・堀切菖蒲園駅", "area": "葛飾区", "feature": "踊り18:30〜21:00", "site": "https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/028/707/20260619.pdf", "siteType": "ref", "pop": 0},
+ {"name": "芝浦三丁目なぎさ通り", "start": "2026-07-25", "end": "2026-07-25", "venue": "芝浦三丁目なぎさ通り", "station": "田町・三田駅", "area": "港区", "feature": "", "site": "https://www.city.minato.tokyo.jp/documents/179419/20260630141053.pdf", "siteType": "ref", "pop": 0},
+ {"name": "品川区立第四日野小学校", "start": "2026-07-26", "end": "2026-07-26", "venue": "品川区立第四日野小学校", "station": "不動前駅", "area": "品川区", "feature": "", "site": "https://www.city.shinagawa.tokyo.jp/ct/pdf/20260626135746_1.pdf", "siteType": "ref", "pop": 0},
+ {"name": "喜多見駅前南側/北側広場", "start": "2026-07-25", "end": "2026-07-26", "venue": "喜多見駅前南側/北側広場", "station": "喜多見駅", "area": "世田谷区", "feature": "踊り21:00〜", "site": "https://kitaminavi.com/topic/1545", "siteType": "official", "pop": 0},
+ {"name": "入谷中央公園", "start": "2026-07-25", "end": "2026-07-26", "venue": "入谷中央公園", "station": "舎人駅", "area": "足立区", "feature": "踊り18:00〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/toneri2707.html", "siteType": "official", "pop": 0},
+ {"name": "第六天公園", "start": "2026-07-25", "end": "2026-07-26", "venue": "第六天公園", "station": "北綾瀬駅", "area": "足立区", "feature": "踊り18:30〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/chokai-nakagawa.html", "siteType": "official", "pop": 0},
+ {"name": "諏訪木第三公園", "start": "2026-07-25", "end": "2026-07-26", "venue": "諏訪木第三公園", "station": "谷在家駅", "area": "足立区", "feature": "踊り18:00〜21:00／順延なし", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/ikou.html", "siteType": "official", "pop": 0},
+ {"name": "傳通院", "start": "2026-07-25", "end": "2026-07-26", "venue": "傳通院", "station": "後楽園・春日駅", "area": "文京区", "feature": "踊り18:00〜20:00", "site": "https://www.denzuin.or.jp/", "siteType": "official", "pop": 0},
+ {"name": "旧子供広場", "start": "2026-07-25", "end": "2026-07-26", "venue": "旧子供広場", "station": "木場・東陽町駅", "area": "江東区", "feature": "踊り17:30〜20:30", "site": "https://minamisuna1.com/37573/", "siteType": "official", "pop": 0},
+ {"name": "天妙国寺境内", "start": "2026-07-25", "end": "2026-07-26", "venue": "天妙国寺境内", "station": "青物横丁・大井町駅", "area": "品川区", "feature": "踊り18:00〜21:00", "site": "https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-kuyakusyo/shisetsu-kuyakusyo-chiiki/hpg000017088.html", "siteType": "official", "pop": 0},
+ {"name": "玉川中町公園", "start": "2026-07-25", "end": "2026-07-26", "venue": "玉川中町公園", "station": "上野毛駅", "area": "世田谷区", "feature": "踊り18:00〜21:00", "site": "https://www.city.setagaya.lg.jp/documents/2043/wakuwaku2026.pdf", "siteType": "ref", "pop": 0},
+ {"name": "世田谷区立奥沢小学校", "start": "2026-07-25", "end": "2026-07-26", "venue": "世田谷区立奥沢小学校", "station": "奥沢駅", "area": "世田谷区", "feature": "踊り18:30〜20:30", "site": "https://www.city.setagaya.lg.jp/documents/2043/wakuwaku2026.pdf", "siteType": "ref", "pop": 0},
+ {"name": "野毛六所神社", "start": "2026-07-25", "end": "2026-07-26", "venue": "野毛六所神社", "station": "奥沢駅", "area": "世田谷区", "feature": "踊り18:00〜21:00", "site": "https://www.city.setagaya.lg.jp/documents/2043/wakuwaku2026.pdf", "siteType": "ref", "pop": 0},
+ {"name": "江戸川中央公園", "start": "2026-07-25", "end": "2026-07-26", "venue": "江戸川中央公園", "station": "瑞江駅", "area": "江戸川区", "feature": "踊り18:00〜20:30", "site": "https://www.city.edogawa.tokyo.jp/e036/kurashi/chiikicommunity/johokyoku/tobu/event/toubutikubonnodori.html", "siteType": "official", "pop": 0},
+ {"name": "三原台公園", "start": "2026-07-25", "end": "2026-07-26", "venue": "三原台公園", "station": "石神井公園・大泉学園駅", "area": "練馬区", "feature": "踊り18:00〜", "site": "http://www.senbadaiko.com/schedule/index.html", "siteType": "official", "pop": 0},
+ {"name": "伊藤谷公園 コミュニティ道路沿い", "start": "2026-07-25", "end": "2026-07-26", "venue": "伊藤谷公園 コミュニティ道路沿い", "station": "綾瀬駅", "area": "足立区", "feature": "踊り19:00〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/higashiayase20-8.html", "siteType": "official", "pop": 0},
+ {"name": "足立区立西新井小学校", "start": "2026-07-25", "end": "2026-07-26", "venue": "足立区立西新井小学校", "station": "大師前駅", "area": "足立区", "feature": "踊り17:30〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "田中稲荷神社", "start": "2026-07-25", "end": "2026-07-26", "venue": "田中稲荷神社", "station": "扇大橋駅", "area": "足立区", "feature": "踊り18:00〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "篠原公園", "start": "2026-07-25", "end": "2026-07-26", "venue": "篠原公園", "station": "四ツ木・お花茶屋駅", "area": "葛飾区", "feature": "踊り18:00〜21:00", "site": "https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/028/707/20260619.pdf", "siteType": "ref", "pop": 0},
+ {"name": "長五さくら公園", "start": "2026-07-25", "end": "2026-07-26", "venue": "長五さくら公園", "station": "東長崎駅", "area": "豊島区", "feature": "踊り19:00〜21:00", "site": "https://www.city.toshima.lg.jp/documents/56995/20260701_all.pdf", "siteType": "ref", "pop": 0},
+ {"name": "三好三丁目児童遊園", "start": "2026-07-25", "end": "2026-07-26", "venue": "三好三丁目児童遊園", "station": "清澄白河駅", "area": "江東区", "feature": "", "site": "https://minamisuna1.com/37573/", "siteType": "official", "pop": 0},
+ {"name": "浄心寺", "start": "2026-07-25", "end": "2026-07-26", "venue": "浄心寺", "station": "清澄白河駅", "area": "江東区", "feature": "踊り19:00〜21:00", "site": "https://minamisuna1.com/37573/", "siteType": "official", "pop": 0},
+ {"name": "今泉延命寺", "start": "2026-07-25", "end": "2026-07-26", "venue": "今泉延命寺", "station": "矢口渡駅", "area": "大田区", "feature": "踊り19:00〜21:00", "site": "https://www.city.ota.tokyo.jp/kamata/ts_yaguchi/oshirase_event/summercalendar.html", "siteType": "official", "pop": 0},
+ {"name": "下丸子六所神社", "start": "2026-07-25", "end": "2026-07-26", "venue": "下丸子六所神社", "station": "下丸子駅", "area": "大田区", "feature": "踊り18:30〜21:00／小雨決行", "site": "https://otakushoren.com/event/164334", "siteType": "official", "pop": 0},
+ {"name": "幡ヶ谷新道公園前", "start": "2026-07-26", "end": "2026-07-27", "venue": "幡ヶ谷新道公園前", "station": "幡ヶ谷駅", "area": "渋谷区", "feature": "踊り17:00〜20:15／雨天変更あり", "site": "https://files.city.shibuya.tokyo.jp/assets/12995aba8b194961be709ba879857f70/9fa6ef6159f44da4983cc61d87d128ac/260701_web_mix.pdf", "siteType": "ref", "pop": 0},
+ {"name": "新小川公園", "start": "2026-07-26", "end": "2026-07-26", "venue": "新小川公園", "station": "飯田橋駅", "area": "新宿区", "feature": "踊り18:00〜20:00", "site": "https://www.city.shinjuku.lg.jp/kusei/kashiwagi01_000001_00037.html", "siteType": "official", "pop": 0},
+ {"name": "白金児童遊園(猿町公園)", "start": "2026-07-26", "end": "2026-07-26", "venue": "白金児童遊園(猿町公園)", "station": "高輪台駅", "area": "港区", "feature": "踊り19:00〜21:00", "site": "https://www.city.minato.tokyo.jp/documents/179419/20260630141053.pdf", "siteType": "ref", "pop": 0},
+ {"name": "青山善光寺境内", "start": "2026-07-26", "end": "2026-07-27", "venue": "青山善光寺境内", "station": "表参道駅", "area": "港区", "feature": "踊り18:30〜21:00", "site": "https://www.city.minato.tokyo.jp/documents/179419/20260630141053.pdf", "siteType": "ref", "pop": 0},
+ {"name": "大田区立道塚小学校", "start": "2026-07-30", "end": "2026-07-31", "venue": "大田区立道塚小学校", "station": "矢口渡・蓮沼駅", "area": "大田区", "feature": "踊り18:00〜20:00／雨天の時は8/1日", "site": "https://xn--6oq58tg5q04t7oq.tokyo/wp-content/uploads/2026/05/530cf143232ce0a856af1c29657ad543.pdf", "siteType": "ref", "pop": 0},
+ {"name": "八名川公園", "start": "2026-07-30", "end": "2026-08-01", "venue": "八名川公園", "station": "森下駅", "area": "江東区", "feature": "踊り18:30〜21:00", "site": "https://shinohashi.amebaownd.com/posts/58980811", "siteType": "official", "pop": 0},
+ {"name": "蛭沼公園", "start": "2026-07-31", "end": "2026-08-01", "venue": "蛭沼公園", "station": "綾瀬駅", "area": "足立区", "feature": "踊り18:30〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/higashiayase20-8.html", "siteType": "official", "pop": 0},
+ {"name": "梅田南公園", "start": "2026-07-31", "end": "2026-08-01", "venue": "梅田南公園", "station": "梅島駅", "area": "足立区", "feature": "踊り17:30〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "埠頭公園", "start": "2026-07-31", "end": "2026-08-01", "venue": "埠頭公園", "station": "芝浦ふ頭・田町駅", "area": "港区", "feature": "踊り18:00〜21:00", "site": "https://www.city.minato.tokyo.jp/documents/179419/20260630141053.pdf", "siteType": "ref", "pop": 0},
+ {"name": "品川区立第一日野小学校", "start": "2026-07-04", "end": "2026-07-04", "venue": "品川区立第一日野小学校", "station": "戸越銀座・不動前駅", "area": "品川区", "feature": "踊り17:00〜18:00", "site": "https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-kuyakusyo/shisetsu-kuyakusyo-chiiki/hpg000017088.html", "siteType": "official", "pop": 0},
+ {"name": "小山八幡神社", "start": "2026-07-05", "end": "2026-07-05", "venue": "小山八幡神社", "station": "西小山・洗足駅", "area": "品川区", "feature": "踊り15:30〜17:00", "site": "https://x.com/Yu_Kanmiya/status/2073023938125525215", "siteType": "ref", "pop": 0},
+ {"name": "花畑公園", "start": "2026-08-01", "end": "2026-08-01", "venue": "花畑公園", "station": "竹ノ塚・団地入口駅", "area": "足立区", "feature": "踊り16:00〜20:30／雨天の時は2日に順延", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/chokai-hanahata426.html", "siteType": "official", "pop": 0},
+ {"name": "東伊興氷川神社", "start": "2026-08-01", "end": "2026-08-01", "venue": "東伊興氷川神社", "station": "竹ノ塚駅", "area": "足立区", "feature": "踊り18:00〜21:00／順延2日", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/ikou.html", "siteType": "official", "pop": 0},
+ {"name": "GINZA SIX ガーデン 屋上庭園", "start": "2026-08-01", "end": "2026-08-01", "venue": "GINZA SIX ガーデン 屋上庭園", "station": "銀座・有楽町駅", "area": "中央区", "feature": "踊り16:00〜20:00", "site": "https://ginbura.ginza.jp/", "siteType": "official", "pop": 0},
+ {"name": "第54回ホリデープロムナード ゆかたで銀ぶら", "start": "2026-08-01", "end": "2026-08-01", "venue": "銀座三丁目交差点(松屋銀座前)", "station": "銀座・有楽町駅", "area": "中央区", "feature": "歩行者天国の銀座中央通りと商業施設の屋上に櫓が立つ、年に一度の特別な夜。20回目のゆかたで銀ぶらは大銀座盆踊りに銘店屋台、2年ぶり復活の打ち水も。浴衣で味わう銀座流の涼。", "site": "https://ginbura.ginza.jp/", "siteType": "official", "pop": 0},
+ {"name": "都立中川公園ふれあい広場", "start": "2026-08-01", "end": "2026-08-02", "venue": "都立中川公園ふれあい広場", "station": "亀有駅", "area": "足立区", "feature": "踊り18:00〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/chokai-nakagawa.html", "siteType": "official", "pop": 0},
+ {"name": "新田稲荷公園", "start": "2026-08-01", "end": "2026-08-02", "venue": "新田稲荷公園", "station": "王子神谷駅", "area": "足立区", "feature": "踊り18:00〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "葛飾区医師会附属看護専門学校校庭", "start": "2026-08-01", "end": "2026-08-02", "venue": "葛飾区医師会附属看護専門学校校庭", "station": "四ツ木駅", "area": "葛飾区", "feature": "踊り17:30〜21:00", "site": "https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/028/707/20260619.pdf", "siteType": "ref", "pop": 0},
+ {"name": "深川一丁目児童遊園", "start": "2026-08-01", "end": "2026-08-01", "venue": "深川一丁目児童遊園", "station": "門前仲町・清澄白河駅", "area": "江東区", "feature": "踊り18:00〜21:00／雨天中止", "site": "https://minamisuna1.com/37573/", "siteType": "official", "pop": 0},
+ {"name": "五郎久保稲荷神社", "start": "2026-08-01", "end": "2026-08-02", "venue": "五郎久保稲荷神社", "station": "東長崎・落合南長崎駅", "area": "豊島区", "feature": "踊り18:30〜20:00", "site": "https://www.city.toshima.lg.jp/documents/56995/20260701_all.pdf", "siteType": "ref", "pop": 0},
+ {"name": "天祖神社 下丸子児童遊園(タコ公園)", "start": "2026-08-01", "end": "2026-08-02", "venue": "天祖神社 下丸子児童遊園(タコ公園)", "station": "下丸子駅", "area": "大田区", "feature": "踊り18:30〜21:00", "site": "https://www.city.ota.tokyo.jp/kamata/ts_yaguchi/oshirase_event/summercalendar.html", "siteType": "official", "pop": 0},
+ {"name": "しょうぶ沼公園", "start": "2026-08-02", "end": "2026-08-03", "venue": "しょうぶ沼公園", "station": "北綾瀬駅", "area": "足立区", "feature": "踊り18:00〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/higashiayase20-8.html", "siteType": "official", "pop": 0},
+ {"name": "矢口二丁目公園", "start": "2026-08-02", "end": "2026-08-03", "venue": "矢口二丁目公園", "station": "武蔵新田駅", "area": "大田区", "feature": "踊り18:30〜21:00", "site": "https://www.city.ota.tokyo.jp/kamata/ts_yaguchi/oshirase_event/summercalendar.html", "siteType": "official", "pop": 0},
+ {"name": "中止時は8/6順延", "start": "2026-08-03", "end": "2026-08-05", "venue": "中止時は8/6順延", "station": "八丁堀駅", "area": "中央区", "feature": "踊り18:45〜21:00", "site": "http://chokai-jichikai.genki365.net/gnkc08/mypage/index.php?gid=G0000050", "siteType": "ref", "pop": 0},
+ {"name": "池上本門寺", "start": "2026-08-04", "end": "2026-08-05", "venue": "池上本門寺", "station": "池上駅", "area": "大田区", "feature": "踊り19:00〜21:00／雨天順延6日", "site": "https://otakushoren.com/event/120742", "siteType": "official", "pop": 0},
+ {"name": "都立東綾瀬公園", "start": "2026-08-06", "end": "2026-08-07", "venue": "都立東綾瀬公園", "station": "北綾瀬駅", "area": "足立区", "feature": "踊り19:00〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/higashiayase20-8.html", "siteType": "official", "pop": 0},
+ {"name": "鷲神社", "start": "2026-08-07", "end": "2026-08-08", "venue": "鷲神社", "station": "西新井駅", "area": "足立区", "feature": "踊り18:00〜／雨天順延", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "加平第二公園", "start": "2026-08-07", "end": "2026-08-08", "venue": "加平第二公園", "station": "北綾瀬駅", "area": "足立区", "feature": "踊り18:00〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/higashiayase20-8.html", "siteType": "official", "pop": 0},
+ {"name": "南蔵院 駐車場", "start": "2026-08-07", "end": "2026-08-08", "venue": "南蔵院 駐車場", "station": "八潮駅", "area": "足立区", "feature": "踊り19:00〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "妙延寺", "start": "2026-08-07", "end": "2026-08-08", "venue": "妙延寺", "station": "大泉学園駅", "area": "練馬区", "feature": "踊り18:30〜", "site": "http://www.senbadaiko.com/schedule/index.html", "siteType": "official", "pop": 0},
+ {"name": "江東公園", "start": "2026-08-07", "end": "2026-08-08", "venue": "江東公園", "station": "住吉・東陽町駅", "area": "江東区", "feature": "", "site": "https://www.chokai.info/areanews/019731.php", "siteType": "official", "pop": 0},
+ {"name": "亀戸二丁目団地 1号棟前広場", "start": "2026-08-07", "end": "2026-08-08", "venue": "亀戸二丁目団地 1号棟前広場", "station": "錦糸町駅", "area": "江東区", "feature": "踊り18:30〜20:30／小雨決行･荒天中止", "site": "https://koto-kameido.com/", "siteType": "official", "pop": 0},
+ {"name": "南砂北公園(カバ公園)", "start": "2026-08-07", "end": "2026-08-08", "venue": "南砂北公園(カバ公園)", "station": "東陽町駅", "area": "江東区", "feature": "踊り18:00〜20:30", "site": "https://minamisuna1-2chokai.com/news/", "siteType": "official", "pop": 0},
+ {"name": "東八幡神社", "start": "2026-08-07", "end": "2026-08-08", "venue": "東八幡神社", "station": "矢口渡駅", "area": "大田区", "feature": "踊り19:00〜21:00", "site": "https://www.city.ota.tokyo.jp/kamata/ts_yaguchi/oshirase_event/summercalendar.html", "siteType": "official", "pop": 0},
+ {"name": "辰沼二丁目公園", "start": "2026-08-08", "end": "2026-08-08", "venue": "辰沼二丁目公園", "station": "北綾瀬駅", "area": "足立区", "feature": "踊り19:00〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "豊田神社", "start": "2026-08-08", "end": "2026-08-08", "venue": "豊田神社", "station": "瑞江駅", "area": "江戸川区", "feature": "踊り18:00〜20:30", "site": "https://www.city.edogawa.tokyo.jp/e036/kurashi/chiikicommunity/johokyoku/tobu/event/toubutikubonnodori.html", "siteType": "official", "pop": 0},
+ {"name": "都立東綾瀬公園", "start": "2026-08-08", "end": "2026-08-09", "venue": "都立東綾瀬公園", "station": "北綾瀬駅", "area": "足立区", "feature": "踊り18:30〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/higashiayase20-8.html", "siteType": "official", "pop": 0},
+ {"name": "第2回 とよす夏祭り 2026", "start": "2026-08-08", "end": "2026-08-09", "venue": "アーバンドック ららぽーと豊洲1 1F シーサイドデッキ(屋外中庭)", "station": "豊洲駅", "area": "江東区", "feature": "公式日程未発表（7月上旬更新予定）", "site": "https://mitsui-shopping-park.com/lalaport/toyosu/event/3420509.html", "siteType": "official", "pop": 0},
+ {"name": "篠崎6丁目第二広場(アスレチック公園)", "start": "2026-08-09", "end": "2026-08-10", "venue": "篠崎6丁目第二広場(アスレチック公園)", "station": "篠崎駅", "area": "江戸川区", "feature": "踊り18:30〜21:00", "site": "https://www.city.edogawa.tokyo.jp/e036/kurashi/chiikicommunity/johokyoku/tobu/event/toubutikubonnodori.html", "siteType": "official", "pop": 0},
+ {"name": "第2回 とよす夏祭り 2026", "start": "2026-08-11", "end": "2026-08-11", "venue": "アーバンドック ららぽーと豊洲1 1F シーサイドデッキ(屋外中庭)", "station": "豊洲駅", "area": "江東区", "feature": "公式日程未発表（7月上旬更新予定）", "site": "https://mitsui-shopping-park.com/lalaport/toyosu/event/3420509.html", "siteType": "official", "pop": 0},
+ {"name": "第2回 とよす夏祭り 2026", "start": "2026-08-15", "end": "2026-08-16", "venue": "アーバンドック ららぽーと豊洲1 1F シーサイドデッキ(屋外中庭)", "station": "豊洲駅", "area": "江東区", "feature": "公式日程未発表（7月上旬更新予定）", "site": "https://mitsui-shopping-park.com/lalaport/toyosu/event/3420509.html", "siteType": "official", "pop": 0},
+ {"name": "東本願寺盆踊り", "start": "2026-08-19", "end": "2026-08-20", "venue": "浅草東本願寺", "station": "田原町・浅草駅", "area": "台東区", "feature": "浅草・東本願寺の境内で開かれる2日間の盆踊り。昨年は和太鼓にDJタイム、手持ち花火体験まで加わった寺×現代カルチャーの異色の夏祭りに。2026年の詳細はInstagramでの告知待ち。", "site": "https://www.honganji.or.jp/", "siteType": "official", "pop": 0},
+ {"name": "渋江東公園", "start": "2026-08-20", "end": "2026-08-21", "venue": "渋江東公園", "station": "四ツ木駅", "area": "葛飾区", "feature": "踊り18:00〜21:00", "site": "https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/028/707/20260619.pdf", "siteType": "ref", "pop": 0},
+ {"name": "花保広場(花保さくら公園)", "start": "2026-08-21", "end": "2026-08-21", "venue": "花保広場(花保さくら公園)", "station": "六町駅", "area": "足立区", "feature": "踊り19:00〜／雨天延期8月22日", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "第36回中央区大江戸まつり盆おどり大会", "start": "2026-08-21", "end": "2026-08-22", "venue": "浜町公園 中央区大江戸まつり盆おどり大会", "station": "浜町・人形町駅", "area": "中央区", "feature": "オリジナル曲「これがお江戸の盆ダンス」で踊る中央区の夏の締めくくり。第36回は区制80周年の記念大会で、民謡歌手の生歌に縁日・友好都市コーナー、無料臨時バスまで揃う区を挙げての祭典。", "songs": "これがお江戸の盆ダンス", "site": "https://www.city.chuo.lg.jp/a0013/bunkakankou/kankoujouhou/event/ooedomaturi.html", "siteType": "official", "pop": 0},
+ {"name": "伊興二丁目 足立第14リーグ少年野球場", "start": "2026-08-21", "end": "2026-08-22", "venue": "伊興二丁目 足立第14リーグ少年野球場", "station": "竹ノ塚・谷在家駅", "area": "足立区", "feature": "踊り18:00〜21:00／順延なし", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/ikou.html", "siteType": "official", "pop": 0},
+ {"name": "東綾瀬公園(はと広場)", "start": "2026-08-21", "end": "2026-08-22", "venue": "東綾瀬公園(はと広場)", "station": "北綾瀬駅", "area": "足立区", "feature": "踊り19:00〜", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/higashiayase20-8.html", "siteType": "official", "pop": 0},
+ {"name": "江戸川区立下鎌田東小学校", "start": "2026-08-22", "end": "2026-08-22", "venue": "江戸川区立下鎌田東小学校", "station": "瑞江駅", "area": "江戸川区", "feature": "踊り17:00〜21:30", "site": "https://www.city.edogawa.tokyo.jp/e036/kurashi/chiikicommunity/johokyoku/tobu/event/toubutikubonnodori.html", "siteType": "official", "pop": 0},
+ {"name": "大谷田公園", "start": "2026-08-22", "end": "2026-08-23", "venue": "大谷田公園", "station": "北綾瀬駅", "area": "足立区", "feature": "踊り18:30〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "梅島天満宮", "start": "2026-08-22", "end": "2026-08-23", "venue": "梅島天満宮", "station": "梅島駅", "area": "足立区", "feature": "踊り19:00〜", "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html", "siteType": "official", "pop": 0},
+ {"name": "四つ木白髭神社", "start": "2026-08-22", "end": "2026-08-23", "venue": "四つ木白髭神社", "station": "四ツ木・京成立石駅", "area": "葛飾区", "feature": "踊り18:30〜20:30", "site": "https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/028/707/20260619.pdf", "siteType": "ref", "pop": 0},
+ {"name": "葛飾区立大道中学校", "start": "2026-08-22", "end": "2026-08-23", "venue": "葛飾区立大道中学校", "station": "お花茶屋・京成立石駅", "area": "葛飾区", "feature": "踊り18:30〜20:30", "site": "https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/028/707/20260619.pdf", "siteType": "ref", "pop": 0},
+ {"name": "駒込六丁目児童遊園", "start": "2026-08-22", "end": "2026-08-22", "venue": "駒込六丁目児童遊園", "station": "駒込・上中里駅", "area": "豊島区", "feature": "踊り18:00〜21:00", "site": "https://www.city.toshima.lg.jp/documents/56995/20260701_all.pdf", "siteType": "ref", "pop": 0},
+ {"name": "工和会館及び会館前車道", "start": "2026-08-22", "end": "2026-08-23", "venue": "工和会館及び会館前車道", "station": "下丸子駅", "area": "大田区", "feature": "踊り18:00〜20:30", "site": "https://www.city.ota.tokyo.jp/kamata/ts_yaguchi/oshirase_event/summercalendar.html", "siteType": "official", "pop": 0},
+ {"name": "赤坂サカス広場", "start": "2026-08-28", "end": "2026-08-29", "venue": "赤坂サカス広場", "station": "赤坂・赤坂見附駅", "area": "港区", "feature": "踊り17:30〜20:30", "site": "https://www.city.minato.tokyo.jp/documents/179419/20260630141053.pdf", "siteType": "ref", "pop": 0},
+ {"name": "八雲神社", "start": "2026-08-29", "end": "2026-08-29", "venue": "八雲神社", "station": "一之江・瑞江駅", "area": "江戸川区", "feature": "踊り18:00〜20:30", "site": "https://www.city.edogawa.tokyo.jp/e036/kurashi/chiikicommunity/johokyoku/tobu/event/toubutikubonnodori.html", "siteType": "official", "pop": 0},
+ {"name": "品川区立大原小学校", "start": "2026-08-29", "end": "2026-08-29", "venue": "品川区立大原小学校", "station": "戸越公園・荏原中延駅", "area": "品川区", "feature": "踊り18:30〜20:30／小雨開催", "site": "https://hebikubo.jp/2025/07/03/r7-hebikubofestival/", "siteType": "official", "pop": 0},
+ {"name": "南綾瀬中央公園", "start": "2026-08-29", "end": "2026-08-30", "venue": "南綾瀬中央公園", "station": "綾瀬・堀切菖蒲園駅", "area": "葛飾区", "feature": "踊り20:30〜", "site": "https://www.city.katsushika.lg.jp/information/1030313/1028707.html", "siteType": "official", "pop": 0},
+ {"name": "若宮八幡神社", "start": "2026-08-29", "end": "2026-08-30", "venue": "若宮八幡神社", "station": "竹ノ塚駅", "area": "足立区", "feature": "踊り18:00〜21:00／順延なし", "site": "https://www.city.adachi.tokyo.jp/kuminjimu/chiikibunka/kuminsanka/ikou.html", "siteType": "official", "pop": 0},
+ {"name": "鉄砲洲児童公園 盆踊り", "start": "2026-08-03", "end": "2026-08-05", "venue": "鉄砲洲児童公園", "station": "八丁堀駅", "area": "中央区", "feature": "踊り18:45〜21:00／雨天中止", "site": "http://chokai-jichikai.genki365.net/gnkc08/mypage/index.php?gid=G0000050", "siteType": "ref", "pop": 0},
+ {"name": "ゆかたで銀ぶら GINZA SIX ガーデン屋上盆踊り", "start": "2026-08-01", "end": "2026-08-01", "venue": "GINZA SIX ガーデン 屋上庭園", "station": "銀座駅", "area": "中央区", "feature": "ゆかたで銀ぶら連動。商業施設屋上の櫓（公式は施設名未明記のため要確認）", "site": "https://ginbura.ginza.jp/", "siteType": "official", "pop": 0},
 ];
 
 const WD=["日","月","火","水","木","金","土"];
@@ -386,7 +580,7 @@ const TABS=[
   {id:"next",label:"来週", order:"開催日が近い順", sort:"date", f:inNextWeek},
   {id:"liked",label:"おきにいり",order:"行きたい数順",sort:"pop",f:e=>!!LIKED[e.name]},
 ];
-const state={tab:"all",limit:20};
+const state={tab:"all",limit:30};
 function currentList(){
   const tab=TABS.find(t=>t.id===state.tab);
   let l=VISIBLE.filter(e=>tab.f(e));
@@ -439,7 +633,7 @@ function render(){
     const n=VISIBLE.filter(t.f).length;
     return `<div class="tab ${t.id===state.tab?'on':''}" data-id="${t.id}">${t.label}<span class="n">${n}</span></div>`;
   }).join("");
-  document.querySelectorAll(".tab").forEach(el=>el.onclick=()=>{state.tab=el.dataset.id;state.limit=20;render();window.scrollTo({top:0})});
+  document.querySelectorAll(".tab").forEach(el=>el.onclick=()=>{state.tab=el.dataset.id;state.limit=30;render();window.scrollTo({top:0})});
   const list=currentList();
   document.getElementById("count").textContent=`${list.length}件`;
   document.getElementById("orderLabel").textContent="並び："+TABS.find(t=>t.id===state.tab).order;
@@ -473,9 +667,9 @@ function render(){
         </div>
       </div>
     </div>`;
-  }).join("")+(list.length>state.limit?'<div class="morebtn" onclick="showMore()">次の20件を表示（残り'+(list.length-state.limit)+'件）</div>':"");
+  }).join("")+(list.length>state.limit?'<div class="morebtn" onclick="showMore()">もっと見る（残り'+(list.length-state.limit)+'件）</div>':"");
 }
-function showMore(){state.limit+=20;render();}
+function showMore(){state.limit+=30;render();}
 function toggleDetail(el){el.closest(".item").classList.toggle("open");}
 function toggleSong(el){const box=el.closest(".detail").querySelector(".songs");const o=box.style.display!=="none";box.style.display=o?"none":"block";el.textContent=o?"♪ 踊れる曲":"♪ 閉じる";}
 function addLike(name,btn){
@@ -484,7 +678,7 @@ function addLike(name,btn){
   saveLikes();render();
 }
 let curShare=null;
-const inviteURL=e=>APP_URL?APP_URL+"/#e/"+(e.id||encodeURIComponent(e.name)):e.site;
+const inviteURL=e=>APP_URL?APP_URL+"#e/"+(e.id||encodeURIComponent(e.name)):e.site;
 const dateSlash=e=>{if(!e.start)return"日程調査中";const f=x=>`${x.getFullYear()}/${String(x.getMonth()+1).padStart(2,"0")}/${String(x.getDate()).padStart(2,"0")}(${WD[x.getDay()]})`;return (e.end&&e.end!==e.start)?f(d(e.start))+"～"+f(d(e.end)):f(d(e.start));};
 const inviteText=e=>`【盆踊りのお誘い】\nShall we BONdance?\n${e.kai||""}${e.name}\n${dateSlash(e)}\n\nおどったー｜日本最大級の盆踊り情報サイト\n${inviteURL(e)}`;
 const curShareE=()=>VISIBLE.find(x=>x.name===curShare);
@@ -498,7 +692,7 @@ function copyInvite(){const e=curShareE();if(!e)return;const t=inviteText(e);
   if(navigator.clipboard){navigator.clipboard.writeText(t).then(()=>toast("コピーしました。LINEに貼り付けて送ってね")).catch(()=>toast("コピーできませんでした"));}
   else toast("コピーに対応していません");}
 function lineInvite(){const e=curShareE();if(!e)return;const t=inviteText(e);
-  window.open("https://line.me/R/msg/text/?"+encodeURIComponent(t),"_blank","noopener");}
+  window.open("https://line.me/R/msg/text/?"+encodeURIComponent(t),"_blank");}
 function nativeShare(){const e=curShareE();if(!e||!navigator.share)return;
   navigator.share({title:"おどったー",text:inviteText(e)}).catch(()=>{});}
 function rr(x,X,Y,W,H,R){x.beginPath();x.moveTo(X+R,Y);x.arcTo(X+W,Y,X+W,Y+H,R);x.arcTo(X+W,Y+H,X,Y+H,R);x.arcTo(X,Y+H,X,Y,R);x.arcTo(X,Y,X+W,Y,R);x.closePath();}
@@ -566,7 +760,9 @@ function drawCollection(list){
 
 function initAds(){
   if(!ADSENSE_CLIENT)return;
-  /* adsbygoogle.jsは<head>で静的読み込み済み（二重読み込み防止のためここでは追加しない） */
+  const sc=document.createElement("script");sc.async=true;sc.crossOrigin="anonymous";
+  sc.src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client="+ADSENSE_CLIENT;
+  document.head.appendChild(sc);
   document.querySelectorAll(".adslot").forEach(el=>{
     el.innerHTML=`<ins class="adsbygoogle" style="display:block" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${ADSENSE_SLOT}" data-ad-format="auto" data-full-width-responsive="true"></ins>`;
     try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}
@@ -688,9 +884,6 @@ function route(){
 window.addEventListener("popstate",route);
 window.addEventListener("hashchange",route);
 
-/* 外部データ(Googleフォーム/CSV)取込時のサニタイズ用。ハードコードDATAには影響しない。 */
-function escHTML(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
-function safeURL(u){u=String(u||"").trim();return /^https?:\/\//i.test(u)?u:"";}
 function parseCSV(t){const rows=[];let row=[],cur="",q=false;
   for(let i=0;i<t.length;i++){const c=t[i];
     if(q){if(c==='"'){if(t[i+1]==='"'){cur+='"';i++;}else q=false;}else cur+=c;}
@@ -700,7 +893,7 @@ function parseCSV(t){const rows=[];let row=[],cur="",q=false;
 async function loadSheet(){
   try{const r=await fetch(SHEET_CSV_URL);const t=await r.text();
     const rows=parseCSV(t).filter(r=>r.length>1);const head=rows.shift().map(h=>h.trim());
-    const arr=rows.map(r=>{const o={};head.forEach((h,i)=>{const v=(r[i]||"").trim();o[h]=(h==="site")?safeURL(v):escHTML(v);});o.pop=parseInt(o.pop||"0",10)||0;return o;}).filter(o=>o.name);
+    const arr=rows.map(r=>{const o={};head.forEach((h,i)=>o[h]=(r[i]||"").trim());o.pop=parseInt(o.pop||"0",10)||0;return o;}).filter(o=>o.name);
     if(arr.length){DATA=arr;assignIds();rebuild();}
   }catch(e){}
 }
