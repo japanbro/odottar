@@ -231,7 +231,7 @@
   .footcredit{margin-top:10px;font-size:.7rem;color:var(--sub)}
   .psec{font-size:.74rem;font-weight:800;color:var(--sub);letter-spacing:.04em;margin:2px 2px 7px}
   .pofficial2{display:inline-block;margin:2px 0 16px;color:#8a94a0;font-size:.78rem;font-weight:700;text-decoration:underline;filter:grayscale(1)}
-  .lcorner{position:absolute;top:calc(9px + env(safe-area-inset-top));left:13px;max-width:64%;text-align:left;font-size:.6rem;font-weight:700;line-height:1.5;letter-spacing:.03em;opacity:.8;z-index:2}
+  .lcorner{position:absolute;top:calc(9px + env(safe-area-inset-top));left:13px;max-width:64%;text-align:left;font-family:"M PLUS Rounded 1c","Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;font-size:.6rem;font-weight:700;line-height:1.5;letter-spacing:.03em;opacity:.8;z-index:2}
   .morebtn{display:block;width:calc(100% - 24px);margin:14px 12px 20px;padding:14px;text-align:center;background:#fff;border:1px solid var(--line2);border-radius:12px;font-weight:800;font-size:.9rem;color:var(--accent);cursor:pointer}
   .pager{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;margin:16px 12px 24px}
   .pager .pg{min-width:38px;height:38px;padding:0 6px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid var(--line2);border-radius:10px;font-weight:800;font-size:.9rem;color:var(--accentD);cursor:pointer;transition:.15s}
@@ -560,9 +560,14 @@ const TODAY=new Date(new Date().toDateString());
 const d=s=>s?new Date(s+"T00:00:00"):null;
 const dayDiff=(a,b)=>Math.round((a-b)/86400000);
 const pad=n=>String(n).padStart(2,"0");
+const isoDate=x=>`${x.getFullYear()}-${pad(x.getMonth()+1)}-${pad(x.getDate())}`;
+// ソート用の実効開催日。複数日程で開催中のイベントは「本日」を基準にする（7/10なら7/10として並ぶ）
+function effStart(e){if(!e.start)return"9999-99-99";return statusOf(e)==="live"?isoDate(TODAY):e.start;}
 function shortDate(e){
   if(!e.start)return '<span class="nd">調査中</span>';
-  const s=d(e.start);const multi=e.end&&e.end!==e.start;
+  const multi=e.end&&e.end!==e.start;
+  // 開催中の複数日程は当日の日付を表示（7/10には7/10、7/11には7/11）
+  const s=(statusOf(e)==="live"&&multi)?TODAY:d(e.start);
   return `<span class="mn">${s.getMonth()+1}/${s.getDate()}</span><span class="wd">${WD[s.getDay()]}${multi?"〜":""}</span>`;
 }
 function longDate(e){if(!e.start)return"日程未定";const f=x=>`${x.getMonth()+1}/${x.getDate()}(${WD[x.getDay()]})`;
@@ -595,7 +600,24 @@ function toast(msg){const el=document.getElementById("toast");if(!el)return;el.t
 function collectionText(){const e=(typeof curShareE==="function")?curShareE():null;return e?inviteText(e):"おどったー｜日本最大級の盆踊り情報サイト｜2026年盆踊り日程一覧";}
 function likeCount(e){if(COUNTER_ENDPOINT&&REMOTE[e.name]!=null)return REMOTE[e.name];return (LIKED[e.name]?1:0);}
 async function loadRemote(){if(!COUNTER_ENDPOINT)return;try{const r=await fetch(COUNTER_ENDPOINT+"/counts");Object.assign(REMOTE,await r.json());render();}catch(e){}}
-async function hitRemote(n,op){if(!COUNTER_ENDPOINT)return;try{const r=await fetch(COUNTER_ENDPOINT+"/hit?k="+encodeURIComponent(n)+"&op="+(op==="dec"?"dec":"inc")+"&id="+encodeURIComponent(CID),{method:"POST"});const j=await r.json();if(j&&j.count!=null){REMOTE[n]=j.count;render();}}catch(e){}}
+// キー単位でリクエストを直列化し、最終的に LIKED の状態へ収束させる。
+// 取り消し→再押下などの連打でも in-flight は常に1本に絞り、サーバ側の冪等化と合わせて二重カウントを防ぐ。
+const HIT={};
+async function syncLike(n){if(!COUNTER_ENDPOINT)return;
+  const s=HIT[n]||(HIT[n]={inflight:false,sent:null});
+  s.desired=!!LIKED[n];
+  if(s.inflight)return; // 進行中なら desired だけ更新。完了後に収束させる
+  s.inflight=true;
+  try{
+    while(s.sent!==s.desired){
+      const want=s.desired,op=want?"inc":"dec";
+      const r=await fetch(COUNTER_ENDPOINT+"/hit?k="+encodeURIComponent(n)+"&op="+op+"&id="+encodeURIComponent(CID),{method:"POST"});
+      const j=await r.json();
+      if(j&&j.count!=null)REMOTE[n]=j.count;
+      s.sent=want;render();
+    }
+  }catch(e){}finally{s.inflight=false;}
+}
 const inThisWeek=e=>["live","week"].includes(statusOf(e));
 const inNextWeek=e=>{if(!e.start||statusOf(e)==="cxl")return false;const dd=dayDiff(d(e.start),TODAY);return dd>=7&&dd<=13;};
 const rankStatus=e=>{const s=statusOf(e);return s==="cxl"?2:(s==="tbd"?1:0);};
@@ -614,8 +636,8 @@ function currentList(){
   l.sort((a,b)=>{
     if(tab.sort==="pop")return likeCount(b)-likeCount(a);
     if(tab.sort==="smart"){const rs=rankStatus(a)-rankStatus(b);if(rs)return rs;
-      const av=a.start||"9999-99-99",bv=b.start||"9999-99-99";if(av!==bv)return av.localeCompare(bv);return likeCount(b)-likeCount(a);}
-    const av=a.start||"9999-99-99",bv=b.start||"9999-99-99";return av.localeCompare(bv);
+      const av=effStart(a),bv=effStart(b);if(av!==bv)return av.localeCompare(bv);return likeCount(b)-likeCount(a);}
+    const av=effStart(a),bv=effStart(b);if(av!==bv)return av.localeCompare(bv);return likeCount(b)-likeCount(a);
   });
   return l;
 }
@@ -674,7 +696,7 @@ function render(){
   document.getElementById("list").innerHTML=list.slice(from,to).map(e=>{
     const st=ST[statusOf(e)],liked=!!LIKED[e.name];
     const esc=e.name.replace(/'/g,"\\'");
-    const songVal=e.songs?e.songs:'<span style="color:var(--sub)">情報募集中（分かる方は教えてください）</span>';
+    const songVal=e.songs?e.songs:'<span style="color:var(--sub)">情報募集中</span>';
   const timeVal=timeOf(e),summaryVal=summaryOf(e);
     return `<div class="item" data-name="${e.name}">
       <div class="itop" onclick="toggleDetail(this)">
@@ -692,7 +714,7 @@ function render(){
         <dl class="info">
           <div><dt>会場</dt><dd>${e.venue}</dd></div>
           <div><dt>最寄</dt><dd>${e.station}・${e.area}</dd></div>
-          <div><dt>時間</dt><dd>${timeOf(e)}</dd></div>
+          <div><dt>踊り始め</dt><dd>${timeOf(e)}</dd></div>
         </dl>
         <div class="acts">
           <div class="btn" onclick="event.stopPropagation();openPage('${esc}')">詳細を見る</div>
@@ -721,9 +743,9 @@ function goPage(p){state.page=p;render();document.getElementById("bar").scrollIn
 function toggleDetail(el){el.closest(".item").classList.toggle("open");}
 function toggleSong(el){const box=el.closest(".detail").querySelector(".songs");const o=box.style.display!=="none";box.style.display=o?"none":"block";el.textContent=o?"♪ 踊れる曲":"♪ 閉じる";}
 function addLike(name,btn){
-  if(LIKED[name]){delete LIKED[name];hitRemote(name,"dec");toast("「行きたい」を取り消しました");}
-  else{LIKED[name]=true;hitRemote(name,"inc");toast("「行きたい」に追加しました");}
-  saveLikes();render();
+  if(LIKED[name]){delete LIKED[name];toast("「行きたい」を取り消しました");}
+  else{LIKED[name]=true;toast("「行きたい」に追加しました");}
+  saveLikes();render();syncLike(name);
 }
 let curShare=null;
 const inviteURL=e=>APP_URL?APP_URL+"#e/"+(e.id||encodeURIComponent(e.name)):e.site;
@@ -889,7 +911,7 @@ function renderPage(name){
   document.getElementById("pTitle").textContent=e.name;
   const st=ST[statusOf(e)],esc=name.replace(/'/g,"\\'"),liked=!!LIKED[e.name];
   const tags=tagsOf(e);
-  const songVal=e.songs?e.songs:'<span style="color:var(--sub)">情報募集中（分かる方は教えてください）</span>';
+  const songVal=e.songs?e.songs:'<span style="color:var(--sub)">情報募集中</span>';
   const timeVal=timeOf(e),summaryVal=summaryOf(e);
   document.getElementById("pBody").innerHTML=`
     <div class="phero">
@@ -898,25 +920,24 @@ function renderPage(name){
       <div class="pdate">${longDate(e)}</div>
     </div>
     <div class="psec">概要</div>
-    <div class="pnote">${summaryVal||`<span style="color:var(--sub)">情報募集中（分かる方は教えてください）</span>`}</div>
+    <div class="pnote">${summaryVal||`<span style="color:var(--sub)">情報募集中</span>`}</div>
     <div class="psec">開催情報</div>
     <div class="pcard">
-      <div class="pitem"><span class="pl">開催時間</span><span class="pv">${timeVal}</span></div>
+      <div class="pitem"><span class="pl">踊り始め</span><span class="pv">${timeVal}</span></div>
       <div class="pitem"><span class="pl">会場</span><span class="pv">${e.venue}</span></div>
       <div class="pitem"><span class="pl">エリア</span><span class="pv">${e.area} ${e.station}</span></div>
-      <div class="pitem"><span class="pl">規模</span><span class="pv">${e.scale||`<span style="color:var(--sub)">情報募集中</span>`}</span></div>
       <div class="pitem"><span class="pl">踊れる曲</span><span class="pv">${songVal}</span></div>
     </div>
+    <a class="formlink" href="${FORM_URL||'#'}" target="_blank" rel="noopener">この盆踊りの情報を提供・修正する</a>
     <div class="pacts">
       <div class="btn primary" onclick="shareSheet('${esc}')">友達を誘う</div>
       <button class="btn heartbtn ${liked?'on':''}" onclick="pageLike('${esc}')">${liked?'\u2665 行きたい済':'\u2661 行きたい'} ${likeCount(e)}</button>
     </div>
     <a class="pofficial2" href="${e.site}" target="_blank" rel="noopener">盆踊り実行委員会公式サイト</a>
-    ${ADSENSE_CLIENT?`<div class="adslot"><ins class="adsbygoogle" style="display:block" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${ADSENSE_SLOT}" data-ad-format="auto" data-full-width-responsive="true"></ins></div>`:'<div class="adph">広告スペース（AdSense）</div>'}
-    <a class="formlink" href="${FORM_URL||'#'}" target="_blank" rel="noopener">この盆踊りの情報を提供・修正する</a>`;
+    ${ADSENSE_CLIENT?`<div class="adslot"><ins class="adsbygoogle" style="display:block" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${ADSENSE_SLOT}" data-ad-format="auto" data-full-width-responsive="true"></ins></div>`:'<div class="adph">広告スペース（AdSense）</div>'}`;
   if(ADSENSE_CLIENT){try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(err){}}
 }
-function pageLike(name){if(LIKED[name]){delete LIKED[name];saveLikes();hitRemote(name,"dec");toast("「行きたい」を取り消しました");}else{LIKED[name]=true;saveLikes();hitRemote(name,"inc");toast("行きたいに追加しました");}renderPage(name);}
+function pageLike(name){if(LIKED[name]){delete LIKED[name];toast("「行きたい」を取り消しました");}else{LIKED[name]=true;toast("行きたいに追加しました");}saveLikes();syncLike(name);renderPage(name);}
 function pageDone(name){if(DONE[name])delete DONE[name];else DONE[name]={y:2026};saveDone();renderPage(name);}
 function route(){
   const pg=document.getElementById("page");
