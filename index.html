@@ -606,6 +606,11 @@ let DATA = [
 
 const WD=["日","月","火","水","木","金","土"];
 const TODAY=new Date(new Date().toDateString());
+// 週はカレンダー週(月曜〜日曜)で定義する
+const WEEK_START=(()=>{const m=new Date(TODAY);m.setDate(m.getDate()-((m.getDay()+6)%7));return m;})();      // 今週の月曜
+const WEEK_END=(()=>{const e=new Date(WEEK_START);e.setDate(e.getDate()+6);return e;})();                     // 今週の日曜
+const NEXT_WEEK_START=(()=>{const m=new Date(WEEK_START);m.setDate(m.getDate()+7);return m;})();              // 来週の月曜
+const NEXT_WEEK_END=(()=>{const e=new Date(NEXT_WEEK_START);e.setDate(e.getDate()+6);return e;})();           // 来週の日曜
 const d=s=>s?new Date(s+"T00:00:00"):null;
 const dayDiff=(a,b)=>Math.round((a-b)/86400000);
 const pad=n=>String(n).padStart(2,"0");
@@ -627,8 +632,7 @@ function statusOf(e){
   const s=d(e.start),en=d(e.end||e.start);
   if(en<TODAY)return"end";
   if(s<=TODAY&&TODAY<=en)return"live";
-  const dd=dayDiff(s,TODAY);
-  if(dd>=0&&dd<=6)return"week";
+  if(s<=WEEK_END)return"week";
   return"soon";
 }
 const ST={live:{t:"開催中",c:"live"},week:{t:"今週",c:"week"},soon:{t:"開催予定",c:"soon"},tbd:{t:"調査中",c:"tbd"},cxl:{t:"中止",c:"cxl"}};
@@ -671,7 +675,7 @@ async function syncLike(n){if(!COUNTER_ENDPOINT)return;
   }catch(e){}finally{s.inflight=false;}
 }
 const inThisWeek=e=>["live","week"].includes(statusOf(e));
-const inNextWeek=e=>{if(!e.start||statusOf(e)==="cxl")return false;const dd=dayDiff(d(e.start),TODAY);return dd>=7&&dd<=13;};
+const inNextWeek=e=>{if(!e.start||statusOf(e)==="cxl")return false;const t=d(e.start);return t>=NEXT_WEEK_START&&t<=NEXT_WEEK_END;};
 const rankStatus=e=>{const s=statusOf(e);return s==="cxl"?2:(s==="tbd"?1:0);};
 const TABS=[
   {id:"all", label:"すべて",order:"開催日順",sort:"smart",f:e=>true},
