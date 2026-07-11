@@ -1,0 +1,13 @@
+{
+  "name": "おどったー｜日本最大級の盆踊り情報サイト",
+  "short_name": "おどったー",
+  "description": "2026年最新の盆踊り日程を掲載。盆オドラーのための情報サイト。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#4db6e8",
+  "theme_color": "#1da1f2",
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
