@@ -12,7 +12,8 @@
     "not_found_handling": "single-page-application",
     "run_worker_first": [
       "/sitemap.xml",
-      "/api/*"
+      "/api/*",
+      "/event/*"
     ]
   },
   "compatibility_flags": [
