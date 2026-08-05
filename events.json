@@ -3869,21 +3869,6 @@
   "pop": 0
  },
  {
-  "eid": "c4045cdbc9",
-  "name": "鉄砲洲児童公園 盆踊り",
-  "start": "2026-08-03",
-  "end": "2026-08-05",
-  "venue": "鉄砲洲児童公園",
-  "station": "八丁堀駅",
-  "area": "中央区",
-  "feature": "踊り18:45〜21:00／雨天中止",
-  "songs": "",
-  "site": "http://chokai-jichikai.genki365.net/gnkc08/mypage/index.php?gid=G0000050",
-  "siteType": "ref",
-  "time": "",
-  "pop": 0
- },
- {
   "eid": "7543629c26",
   "name": "駒沢緑泉公園 納涼盆踊り大会",
   "start": "2026-08-03",
@@ -3927,6 +3912,21 @@
   "siteType": "official",
   "time": "19:00",
   "scale": "大規模",
+  "pop": 0
+ },
+ {
+  "eid": "5c641a6b62",
+  "name": "明石町町会 納涼盆踊り",
+  "start": "2026-08-06",
+  "end": "2026-08-07",
+  "venue": "中央区立明石小学校校庭",
+  "station": "築地",
+  "area": "中央区",
+  "feature": "18:00〜21:00。子ども盆踊り・屋台あり",
+  "songs": "",
+  "site": "https://chuo9.tokyo/event/366/",
+  "siteType": "ref",
+  "time": "18:00",
   "pop": 0
  },
  {
@@ -4170,6 +4170,36 @@
   "songs": "",
   "site": "https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/028/707/080731.pdf",
   "siteType": "official",
+  "time": "19:00",
+  "pop": 0
+ },
+ {
+  "eid": "1879cff2d6",
+  "name": "十条駅前盆踊り",
+  "start": "2026-08-07",
+  "end": "2026-08-09",
+  "venue": "JR十条駅前広場（ロータリー）",
+  "station": "十条",
+  "area": "北区",
+  "feature": "王子神社例大祭にあわせ開催。18:30〜20:30。駅前再開発で休止→復活した盆踊り",
+  "songs": "",
+  "site": "https://tokyokita.goguynet.jp/2026/08/02/ojijinjyasairei_jujo_bonodori2026/",
+  "siteType": "ref",
+  "time": "18:30",
+  "pop": 0
+ },
+ {
+  "eid": "bf37d233d4",
+  "name": "ゐの市盆踊り～不忍夢～",
+  "start": "2026-08-07",
+  "end": "2026-08-16",
+  "venue": "上野恩賜公園 袴腰広場",
+  "station": "上野",
+  "area": "台東区",
+  "feature": "盆踊り19:00-20:00/ステージ16:00-19:00。上野中通商店街振興組合主催・台東区後援",
+  "songs": "",
+  "site": "https://x.com/ueno_club",
+  "siteType": "ref",
   "time": "19:00",
   "pop": 0
  },
@@ -4430,6 +4460,21 @@
   "pop": 0
  },
  {
+  "eid": "b353c029a0",
+  "name": "箱崎睦会 盆踊り",
+  "start": "2026-08-08",
+  "end": "2026-08-08",
+  "venue": "箱崎公園",
+  "station": "水天宮前",
+  "area": "中央区",
+  "feature": "箱崎睦会（箱崎北新堀町会・箱崎二三丁目町会・箱四町会合同）",
+  "songs": "",
+  "site": "http://www.hakozaki4.cher-ish.net/",
+  "siteType": "ref",
+  "time": "18:30",
+  "pop": 0
+ },
+ {
   "eid": "527965bead",
   "name": "篠崎6丁目第二広場(アスレチック公園)",
   "start": "2026-08-09",
@@ -4518,6 +4563,21 @@
   "site": "https://hachimanjinja.or.jp/main/?p=5801",
   "siteType": "official",
   "time": "18:00",
+  "pop": 0
+ },
+ {
+  "eid": "7b5a7a4025",
+  "name": "祖師谷観世音堂 盆踊り",
+  "start": "2026-08-09",
+  "end": "2026-08-10",
+  "venue": "祖師谷観世音堂",
+  "station": "成城学園前",
+  "area": "世田谷区",
+  "feature": "観音堂祭禮四万六千日納涼盆踊り大会。祖師谷地域最後の盆踊り",
+  "songs": "",
+  "site": "https://x.com/SOSHIGAYASHOTEN",
+  "siteType": "ref",
+  "time": "18:30",
   "pop": 0
  },
  {
@@ -4716,6 +4776,36 @@
   "pop": 0
  },
  {
+  "eid": "15042db5c5",
+  "name": "池上養源寺 精霊送り盆踊り",
+  "start": "2026-08-15",
+  "end": "2026-08-15",
+  "venue": "池上養源寺",
+  "station": "池上",
+  "area": "大田区",
+  "feature": "精霊送り実行委員会・光遊会・堤方北町会。雨天順延16日",
+  "songs": "",
+  "site": "https://www.instagram.com/ikegamiyogenji/",
+  "siteType": "ref",
+  "time": "18:30",
+  "pop": 0
+ },
+ {
+  "eid": "03f1a3cca3",
+  "name": "小伝馬町二之部町会 盆踊り",
+  "start": "2026-08-15",
+  "end": "2026-08-15",
+  "venue": "十思公園",
+  "station": "小伝馬町",
+  "area": "中央区",
+  "feature": "",
+  "songs": "",
+  "site": "http://www.kodemma-cho.tokyo/index.html",
+  "siteType": "ref",
+  "time": "18:00",
+  "pop": 0
+ },
+ {
   "eid": "b650fe03db",
   "name": "ちとふな盆踊り",
   "start": "2026-08-16",
@@ -4759,6 +4849,21 @@
   "site": "https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/028/707/20260619.pdf",
   "siteType": "official",
   "time": "18:00",
+  "pop": 0
+ },
+ {
+  "eid": "1aee8d9098",
+  "name": "外神田文化体育会 盆踊り",
+  "start": "2026-08-20",
+  "end": "2026-08-21",
+  "venue": "芳林公園",
+  "station": "末広町",
+  "area": "千代田区",
+  "feature": "",
+  "songs": "",
+  "site": "https://www.oedosukerokutaiko.com/htm/top_japanese.html",
+  "siteType": "ref",
+  "time": "19:00",
   "pop": 0
  },
  {
@@ -5474,6 +5579,36 @@
   "pop": 0
  },
  {
+  "eid": "f1b4fa15cd",
+  "name": "坂下一丁目南町会 盆踊り",
+  "start": "2026-08-22",
+  "end": "2026-08-23",
+  "venue": "志村公園",
+  "station": "志村三丁目",
+  "area": "板橋区",
+  "feature": "",
+  "songs": "",
+  "site": "https://www.itabashi-life.com/2026natumaturi.pdf",
+  "siteType": "ref",
+  "time": "17:00",
+  "pop": 0
+ },
+ {
+  "eid": "fd80726277",
+  "name": "入船三丁目町会 盆踊り",
+  "start": "2026-08-24",
+  "end": "2026-08-25",
+  "venue": "NTT裏×Rico's前（入船3丁目）",
+  "station": "新富町",
+  "area": "中央区",
+  "feature": "",
+  "songs": "",
+  "site": "https://x.com/iri2choukai",
+  "siteType": "ref",
+  "time": "18:30",
+  "pop": 0
+ },
+ {
   "eid": "71fc6aa620",
   "name": "赤坂夏おどり",
   "start": "2026-08-28",
@@ -5546,6 +5681,21 @@
   "songs": "",
   "site": "https://www.city.arakawa.tokyo.jp/documents/45496/20260721_00.pdf",
   "siteType": "official",
+  "time": "18:30",
+  "pop": 0
+ },
+ {
+  "eid": "1ed9df3b4d",
+  "name": "新河岸地区 盆踊り",
+  "start": "2026-08-28",
+  "end": "2026-08-29",
+  "venue": "徳丸橋公園",
+  "station": "高島平",
+  "area": "板橋区",
+  "feature": "新河岸地区1町会5自治会合同",
+  "songs": "",
+  "site": "https://www.itabashi-life.com/2026natumaturi.pdf",
+  "siteType": "ref",
   "time": "18:30",
   "pop": 0
  },
