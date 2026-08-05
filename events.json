@@ -1431,7 +1431,8 @@
   "site": "https://www.jiyugaoka-abc.com/special/bonodori/",
   "siteType": "official",
   "time": "",
-  "pop": 260
+  "pop": 260,
+  "beginner": true
  },
  {
   "eid": "5772957d58",
@@ -2008,7 +2009,8 @@
   "site": "http://www.shinbashi.net/top/koichi/2026/",
   "siteType": "official",
   "time": "15:00",
-  "pop": 280
+  "pop": 280,
+  "beginner": true
  },
  {
   "eid": "fe8509037f",
@@ -3499,7 +3501,8 @@
   "site": "https://nakabon.jp/",
   "siteType": "official",
   "time": "",
-  "pop": 1400
+  "pop": 1400,
+  "beginner": true
  },
  {
   "eid": "d4dd19ba3a",
@@ -4204,21 +4207,6 @@
   "pop": 0
  },
  {
-  "eid": "f416c9b8e6",
-  "name": "第7回 渋谷盆踊り",
-  "start": "2026-08-08",
-  "end": "2026-08-08",
-  "venue": "渋谷(北谷公園ほか)",
-  "station": "渋谷駅",
-  "area": "渋谷区",
-  "feature": "中規模・著名(多彩な音頭と屋台で楽しむ渋谷の夏祭り)",
-  "songs": "",
-  "site": "https://summer.walkerplus.com/odekake/detail_e/ar0313e557931/",
-  "siteType": "ref",
-  "time": "",
-  "pop": 120
- },
- {
   "eid": "a825a78bcd",
   "name": "辰沼二丁目公園",
   "start": "2026-08-08",
@@ -4473,6 +4461,21 @@
   "siteType": "ref",
   "time": "18:30",
   "pop": 0
+ },
+ {
+  "eid": "6d19cf5a44",
+  "name": "渋谷盆踊り",
+  "start": "2026-08-08",
+  "end": "2026-08-08",
+  "venue": "SHIBUYA109前（道玄坂・文化村通り）",
+  "station": "渋谷駅",
+  "area": "渋谷区",
+  "feature": "第7回。SHIBUYA109前の道路上に櫓を特設し歩行者天国で輪踊り。縁日屋台・キッチンカー出店。交通規制16:30〜22:30。荒天中止の場合あり",
+  "songs": "渋谷音頭・オリンピック渋谷音頭・夢みる渋谷音頭・東京音頭・大東京音頭・河内おとこ節・炭坑節",
+  "site": "https://shibuyadogenzaka.com/?p=9030",
+  "siteType": "official",
+  "time": "18:00",
+  "pop": 120
  },
  {
   "eid": "527965bead",
@@ -5898,6 +5901,23 @@
   "pop": 250
  },
  {
+  "eid": "f34c130721",
+  "name": "梅田神明町自治会 盆踊り",
+  "start": "2026-09-05",
+  "end": "2026-09-05",
+  "venue": "梅田公園",
+  "station": "",
+  "area": "足立区",
+  "feature": "",
+  "songs": "",
+  "organizer": "梅田神明町自治会",
+  "address": "東京都足立区梅田6-26-1",
+  "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html",
+  "siteType": "official",
+  "time": "18:00",
+  "pop": 0
+ },
+ {
   "eid": "88a481b968",
   "name": "有明ガーデン スポーツエンターテイメント広場",
   "start": "2026-09-12",
@@ -5940,6 +5960,23 @@
   "site": "https://shinkoiwa06.1web.jp/schedule/",
   "siteType": "official",
   "time": "",
+  "pop": 0
+ },
+ {
+  "eid": "902848c65a",
+  "name": "日ノ出町自治会 盆踊り大会",
+  "start": "2026-09-19",
+  "end": "2026-09-20",
+  "venue": "千住旭公園",
+  "station": "",
+  "area": "足立区",
+  "feature": "",
+  "songs": "",
+  "organizer": "日ノ出町自治会",
+  "address": "東京都足立区千住旭町30",
+  "site": "https://www.city.adachi.tokyo.jp/chiiki/bonfes2026.html",
+  "siteType": "official",
+  "time": "19:00",
   "pop": 0
  },
  {
@@ -5998,9 +6035,10 @@
   "scale": "大規模",
   "feature": "",
   "songs": "",
+  "organizer": "椿親和会",
   "site": "https://www.city.edogawa.tokyo.jp/e036/kurashi/chiikicommunity/johokyoku/tobu/event/toubutikubonnodori.html",
   "siteType": "official",
-  "time": "17:00",
+  "time": "18:00",
   "pop": 120
  },
  {
@@ -6154,7 +6192,8 @@
   "site": "https://sugamo.or.jp/",
   "siteType": "official",
   "time": "",
-  "pop": 160
+  "pop": 160,
+  "beginner": true
  },
  {
   "eid": "c92bb0be41",
