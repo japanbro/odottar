@@ -237,6 +237,11 @@
   .footcredit{margin-top:10px;font-size:.7rem;color:var(--sub)}
   .psec{font-size:.74rem;font-weight:800;color:var(--sub);letter-spacing:.04em;margin:2px 2px 7px}
   .pofficial2{display:inline-block;margin:2px 0 16px;color:#8a94a0;font-size:.78rem;font-weight:700;text-decoration:underline;filter:grayscale(1)}
+  .pposter{margin:8px 0 14px}
+  .pposter img{width:100%;border-radius:14px;border:1px solid var(--line2);display:block}
+  .pposter figcaption,.pposter .pcap{font-size:.7rem;color:var(--sub);text-align:center;margin-top:5px}
+  .pposter.pdf a.pbtn{display:flex;align-items:center;justify-content:center;gap:6px;padding:14px;border:1px solid var(--line2);border-radius:12px;background:#fff;color:var(--accentD);font-weight:800;font-size:.9rem;text-decoration:none}
+  .bdg.end{color:#fff;background:#9aa3ac}
   .lcorner{position:absolute;top:calc(9px + env(safe-area-inset-top));left:13px;max-width:64%;text-align:left;font-family:"M PLUS Rounded 1c","Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;font-size:.6rem;font-weight:700;line-height:1.5;letter-spacing:.03em;opacity:.8;z-index:2}
   .morebtn{display:block;width:calc(100% - 24px);margin:14px 12px 20px;padding:14px;text-align:center;background:#fff;border:1px solid var(--line2);border-radius:12px;font-weight:800;font-size:.9rem;color:var(--accent);cursor:pointer}
   .pager{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;margin:16px 12px 24px}
@@ -783,7 +788,7 @@ function statusOf(e){
   if(s<=WEEK_END)return"week";
   return"soon";
 }
-const ST={live:{t:"開催中",c:"live"},week:{t:"今週",c:"week"},soon:{t:"開催予定",c:"soon"},tbd:{t:"調査中",c:"tbd"},cxl:{t:"中止",c:"cxl"}};
+const ST={live:{t:"開催中",c:"live"},week:{t:"今週",c:"week"},soon:{t:"開催予定",c:"soon"},tbd:{t:"調査中",c:"tbd"},cxl:{t:"中止",c:"cxl"},end:{t:"終了",c:"end"}};
 let VISIBLE=DATA.filter(e=>statusOf(e)!=="end");
 function rebuild(){VISIBLE=DATA.filter(e=>statusOf(e)!=="end");}
 function assignIds(){const pad=x=>String(x).padStart(7,"0");let k=2;DATA.forEach(e=>{e.id=(e.name==="下北沢盆踊り")?pad(1):pad(k++);});}
@@ -1132,6 +1137,11 @@ function renderPage(name){
   const tags=tagsOf(e);
   const songVal=e.songs?H(e.songs):'<span style="color:var(--sub)">情報募集中</span>';
   const timeVal=timeOf(e),summaryVal=summaryOf(e);
+  const posterIsPdf=/\.pdf(\?|#|$)/i.test(e.poster||"");
+  const posterCap=`ポスター出典: ${e.site?`<a href="${safeHref(e.site)}" target="_blank" rel="noopener">公式サイト</a>`:"主催者"}`;
+  const posterBlock=e.poster?(posterIsPdf
+    ?`<div class="psec">ポスター</div><div class="pposter pdf"><a class="pbtn" href="${safeHref(e.poster)}" target="_blank" rel="noopener">📄 ポスター/チラシを見る（PDF）</a><div class="pcap">${posterCap}</div></div>`
+    :`<div class="psec">ポスター</div><figure class="pposter"><img src="${safeHref(e.poster)}" alt="${H(e.name)}のポスター" loading="lazy"><figcaption>${posterCap}</figcaption></figure>`):"";
   document.getElementById("pBody").innerHTML=`
     <div class="phero">
       <div class="pdt"><span class="bdg ${st.c}">${st.t}</span>${e.kai?" "+H(e.kai):""}</div>
@@ -1153,8 +1163,9 @@ function renderPage(name){
       <button class="btn heartbtn ${liked?'on':''}" onclick="pageLike('${e.eid}')">${liked?'\u2665 行きたい済':'\u2661 行きたい'} ${likeCount(e)}</button>
     </div>
     <a class="pofficial2" href="${safeHref(e.site)}" target="_blank" rel="noopener">盆踊り実行委員会公式サイト</a>
-    ${ADSENSE_CLIENT?`<div class="adslot"><ins class="adsbygoogle" style="display:block" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${ADSENSE_SLOT}" data-ad-format="auto" data-full-width-responsive="true"></ins></div>`:'<div class="adph">広告スペース（AdSense）</div>'}`;
-  if(ADSENSE_CLIENT){try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(err){}}
+    ${(ADSENSE_CLIENT&&ADSENSE_SLOT)?`<div class="adslot"><ins class="adsbygoogle" style="display:block" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${ADSENSE_SLOT}" data-ad-format="auto" data-full-width-responsive="true"></ins></div>`:''}
+    ${posterBlock}`;
+  if(ADSENSE_CLIENT&&ADSENSE_SLOT){try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(err){}}
 }
 function pageLike(eid){const e=DATA.find(x=>x.eid===eid);if(!e)return;
   if(LIKED[eid]){delete LIKED[eid];toast("「行きたい」を取り消しました");}else{LIKED[eid]=true;toast("行きたいに追加しました");}
