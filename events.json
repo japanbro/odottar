@@ -5090,6 +5090,21 @@
   "pick": true
  },
  {
+  "eid": "c395842bf0",
+  "name": "第50回 鷺宮盆おどり",
+  "start": "2026-08-08",
+  "end": "2026-08-09",
+  "venue": "旧鷺宮小学校 校庭",
+  "station": "鷺ノ宮駅",
+  "area": "中野区",
+  "feature": "第50回／両日16:00〜20:30・踊り19:30〜／DJフェス型",
+  "songs": "",
+  "site": "https://nakano.keizai.biz/headline/3375",
+  "siteType": "ref",
+  "time": "19:30",
+  "pop": 0
+ },
+ {
   "eid": "527965bead",
   "name": "篠崎6丁目第二広場(アスレチック公園)",
   "start": "2026-08-09",
@@ -6339,6 +6354,21 @@
   "pop": 0
  },
  {
+  "eid": "b0cfd5df28",
+  "name": "久我山盆踊り大会",
+  "start": "2026-08-22",
+  "end": "2026-08-23",
+  "venue": "久我山中央緑地公園",
+  "station": "久我山駅",
+  "area": "杉並区",
+  "feature": "18:00〜21:00／小雨決行・荒天中止",
+  "songs": "",
+  "site": "https://kugayamatown.com/eventnews.html",
+  "siteType": "official",
+  "time": "18:00",
+  "pop": 0
+ },
+ {
   "eid": "fd80726277",
   "name": "入船三丁目町会 盆踊り",
   "start": "2026-08-24",
@@ -6604,6 +6634,21 @@
   "site": "https://nakamebonodori.jp/",
   "siteType": "official",
   "time": "17:30",
+  "pop": 0
+ },
+ {
+  "eid": "7adcf8e1e3",
+  "name": "赤羽納涼フェスタ2026",
+  "start": "2026-08-29",
+  "end": "2026-08-30",
+  "venue": "赤羽小学校 校庭",
+  "station": "赤羽駅",
+  "area": "北区",
+  "feature": "8/29 11:00〜21:00・8/30 10:00〜21:00／飲食・縁日・ステージ・盆踊り",
+  "songs": "",
+  "site": "https://x.com/1bangai/status/2066384179257045074",
+  "siteType": "official",
+  "time": "",
   "pop": 0
  },
  {
@@ -7008,25 +7053,6 @@
   "pop": 160,
   "kai": 39,
   "beginner": true
- },
- {
-  "eid": "c92bb0be41",
-  "name": "日比谷公園丸の内音頭大盆踊り大会",
-  "start": "",
-  "end": "",
-  "venue": "日比谷公園 噴水広場ほか",
-  "station": "日比谷駅",
-  "area": "千代田区",
-  "scale": "大規模",
-  "feature": "『丸の内音頭』発祥の大会。2026年は中止",
-  "songs": "丸の内音頭、東京音頭",
-  "site": "https://www.hibiyabonodori.com/",
-  "siteType": "official",
-  "time": "",
-  "organizer": "日比谷公園睦会商店会",
-  "desc": "日比谷公園の噴水広場を主会場に開かれてきた大盆踊り大会。例年約4万人が来場し、全国の料理の模擬店が並ぶ賑わいで知られる。",
-  "updated": "2026-08-06",
-  "pop": 150
  },
  {
   "eid": "72f2f42011",
