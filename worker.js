@@ -4,31 +4,22 @@
 // GET  /event/<eid>                         … イベント個別ページ (events.json からSSR)
 // GET  /sitemap.xml                         … 全イベント個別ページを含む動的サイトマップ
 //
-// ■ イベント個別ページの設計 (2026-07-17)
-//  index.html は SPA でイベント381件をJS描画しており、クローラーには「ほぼ1ページのサイト」に
-//  見える (AdSense審査・SEOで不利)。個別ページを静的381ファイルで持つと GitHub Web UI の
-//  100ファイル/コミット制限と衝突するため、Worker側で /event/<eid> をSSRする方式を採用。
-//  データ源は events.json (pipeline/extract_data.py で index.html の DATA から生成)。
-//  index.html の DATA を更新したら events.json も再生成して一緒にデプロイすること:
-//    python3 pipeline/extract_data.py index.html > events.json
+// ■ イベント個別ページの設計 (2026-07-17 / 2026-08-05 りっち化)
+//  index.html の SPA 個別ページ(.phero/.psec/.pcard/.pacts)テイストに合わせてSSR。
+//  「友達を誘う」= 共有シート(Instagram/TikTok用の1080x1920画像生成 + LINE + X + コピー)。
+//  「行きたい」= ハート + 数。SPAと同じ localStorage(odottar_kininaru_v2 / odottar_cid_v1)と /api を使う。
+//  データ源は events.json。index.html の DATA 更新後は再生成: python3 pipeline/extract_data.py index.html > events.json
 //
-// ■ いいねカウンタを KV → D1 に移行した理由 (2026-07-11)
-//  旧実装は KV の単一キー "counts" に全イベントのカウントをJSONで入れ、read → +1 → write していた。
-//   - KVはアトミックでない → 同時いいねで lost update
-//   - KVは結果整合で get が最大60秒古い値を返す → その古い値を書き戻し、直近1分のいいねが巻き戻る
-//   - 全イベントが同じキーを共有するので、別イベント同士でも競合する
-//   - 同一キーへの書き込みは 1回/秒 上限
-//  → 「他人のいいねが出ない/増えない」の原因。
-//  新実装は D1 で 1いいね = likes(eid,cid) の1行。INSERT OR IGNORE / DELETE はアトミックで、
-//  PRIMARY KEY(eid,cid) が二重いいねをDBレベルで拒否する。
-//  キーもイベント名 → 不変ID eid に変更 (改名でカウント消失/同名別日イベントの合算を防ぐ)。
+//  りっち化スキーマ(任意項目・入り次第表示/なければ非表示):
+//   t_open(開場) time(踊り開始・既存) t_end(終了) kai(第◯回) yatai("あり")
+//   rain(小雨決行/順延/中止) songs(・区切り) organizer(主催) address lat lng
+//   pick(true=おどったーオススメ) fee("有料"で有料表示) poster(画像・出典明記で引用) image desc
+//  設計: バッジは「記載があれば点灯」のみ(なし/不明は出さない=誤判定ゼロ)。主CTAは友達を誘う。
+//        公式は出典に降格(おどったー内で完結)、地図はGoogleマップ外部リンク、ポスターは広告より下。
+//        情報が乏しい小規模盆踊りはSEO配慮の定型文を自動表示。曲目タグは出現頻度順で低関連は薄表示。
 //
-// ■ セキュリティ方針
-//  - id(クライアント識別子)必須。無しの無限inc穴を塞ぐ。
-//  - k(eid)/id は長さ上限。
-//  - Origin許可リストで他サイト/素のcurlを弾く(速度制限の代替ではない)。
-//  - 全レスポンスに基本セキュリティヘッダを付与。
-//  ※ 連打・水増し対策は Cloudflare Dashboard の Rate Limiting / Turnstile 併用が前提。
+// ■ いいね D1 移行 (2026-07-11): 1いいね=likes(eid,cid)の1行。INSERT OR IGNORE/DELETE はアトミック。
+// ■ セキュリティ: id必須・長さ上限、Origin許可リスト、全レスポンスに基本ヘッダ。
 
 const ALLOWED_ORIGINS = ["https://odottar.com", "https://www.odottar.com"];
 const EID_MAX = 32;
@@ -51,7 +42,6 @@ function json(obj, status = 200) {
   });
 }
 
-// GET /api/counts -> { eid: いいね数, ... }
 async function getCounts(env) {
   if (!env.DB) return json({ error: "D1 not bound" }, 500);
   const { results } = await env.DB.prepare(
@@ -66,41 +56,31 @@ async function getCounts(env) {
   return json(out);
 }
 
-// POST /api/hit?k=<eid>&op=inc|dec&id=<cid> -> { count }
 async function postHit(env, request) {
   const url = new URL(request.url);
-
   const origin = request.headers.get("Origin");
   if (origin && !ALLOWED_ORIGINS.includes(origin)) return json({ error: "forbidden origin" }, 403);
-
   const eid = url.searchParams.get("k") || "";
   const cid = url.searchParams.get("id") || "";
   if (!eid || eid.length > EID_MAX) return json({ error: "bad k" }, 400);
   if (!cid || cid.length > ID_MAX) return json({ error: "bad id" }, 400);
   if (!env.DB) return json({ error: "D1 not bound" }, 500);
-
   const op = url.searchParams.get("op") === "dec" ? "dec" : "inc";
-
-  // batch はトランザクションで直列実行される。
-  // inc: 既にいいね済みなら OR IGNORE で無視 (冪等)。dec: 無ければ0行削除 (冪等)。
   const write = op === "inc"
     ? env.DB.prepare("INSERT OR IGNORE INTO likes (eid, cid) VALUES (?1, ?2)").bind(eid, cid)
     : env.DB.prepare("DELETE FROM likes WHERE eid = ?1 AND cid = ?2").bind(eid, cid);
-
   const read = env.DB.prepare(
     `SELECT (SELECT COUNT(*) FROM likes WHERE eid = ?1)
           + COALESCE((SELECT n FROM seed WHERE eid = ?1), 0) AS c`
   ).bind(eid);
-
   const [, res] = await env.DB.batch([write, read]);
   return json({ count: Number(res.results?.[0]?.c ?? 0) });
 }
 
 /* ========== イベント個別ページ SSR ========== */
 
-// events.json のモジュールスコープキャッシュ。isolate生存中は再フェッチしない
-// (events.json はデプロイ時にしか変わらず、デプロイで isolate も入れ替わるため安全)。
 let EVENTS_CACHE = null;
+let SONG_FREQ = null;
 
 async function loadEvents(env, request) {
   if (EVENTS_CACHE) return EVENTS_CACHE;
@@ -114,7 +94,7 @@ async function loadEvents(env, request) {
 const H = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const WD = ["日", "月", "火", "水", "木", "金", "土"];
 
-function jd(iso) { // "2026-06-05" -> Date (UTC固定で暦日として扱う)
+function jd(iso) {
   const [y, m, d] = iso.split("-").map(Number);
   return new Date(Date.UTC(y, m - 1, d));
 }
@@ -127,7 +107,6 @@ function dateRange(e) {
   if (!e.start) return "日程調査中";
   return (e.end && e.end !== e.start) ? `${fmtDate(e.start)} 〜 ${fmtDate(e.end)}` : fmtDate(e.start);
 }
-// JSTの今日 "YYYY-MM-DD"
 function todayJST() {
   return new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
 }
@@ -140,6 +119,25 @@ function statusLabel(e) {
   return { t: "開催予定", c: "soon" };
 }
 
+function splitSongs(s) {
+  return String(s || "").split(/[・、,，／\/\s]+/).map(x => x.trim()).filter(Boolean);
+}
+function songFreq(events) {
+  if (SONG_FREQ) return SONG_FREQ;
+  const m = new Map();
+  for (const e of events) for (const s of splitSongs(e.songs)) m.set(s, (m.get(s) || 0) + 1);
+  SONG_FREQ = m;
+  return m;
+}
+function sortedSongs(e, events) {
+  const f = songFreq(events);
+  return splitSongs(e.songs).sort((a, b) => (f.get(b) || 0) - (f.get(a) || 0));
+}
+function mapUrl(e) {
+  const q = (e.lat && e.lng) ? `${e.lat},${e.lng}` : `${e.venue || e.name} ${e.address || e.area || ""}`.trim();
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+}
+
 function eventJsonLd(e) {
   const ld = {
     "@context": "https://schema.org",
@@ -149,44 +147,79 @@ function eventJsonLd(e) {
     location: {
       "@type": "Place",
       name: e.venue || e.name,
-      address: { "@type": "PostalAddress", addressLocality: e.area || "", addressCountry: "JP" }
+      address: { "@type": "PostalAddress", streetAddress: e.address || undefined, addressLocality: e.area || "", addressCountry: "JP" }
     },
     url: `${ORIGIN}/event/${e.eid}`,
-    isAccessibleForFree: true
+    isAccessibleForFree: e.fee !== "有料"
   };
   if (e.start) ld.startDate = e.time ? `${e.start}T${e.time}:00+09:00` : e.start;
   if (e.end || e.start) ld.endDate = e.end || e.start;
-  if (e.feature) ld.description = e.feature;
+  if (e.lat && e.lng) ld.location.geo = { "@type": "GeoCoordinates", latitude: e.lat, longitude: e.lng };
+  if (e.organizer) ld.organizer = { "@type": "Organization", name: e.organizer };
+  const img = e.image || (/\.pdf(\?|#|$)/i.test(e.poster || "") ? "" : e.poster);
+  if (img) ld.image = img;
+  if (e.desc || e.feature) ld.description = e.desc || e.feature;
   if (e.site) ld.sameAs = e.site;
   return JSON.stringify(ld);
 }
 
 function renderEventPage(e, events) {
   const st = statusLabel(e);
-  const title = `${e.name}（${e.start ? fmtDate(e.start) : "2026年・日程調査中"}）｜${e.area || "東京"}の盆踊り｜おどったー`;
-  const desc = `${e.area ? e.area + "の盆踊り「" : "「"}${e.name}」の開催情報。${e.start ? "日程: " + dateRange(e) + "。" : ""}${e.time ? "踊り開始 " + e.time + "〜。" : ""}会場: ${e.venue || "調査中"}。${e.station ? "最寄: " + e.station + "。" : ""}最新情報は公式サイトをご確認ください。`.slice(0, 160);
+  const ss = sortedSongs(e, events);
+  const yr = (e.start || "2026").slice(0, 4);
+  const title = `${e.name}｜${yr}年${e.area || "東京"}の盆踊り・夏祭り｜おどったー`;
+  const desc = `${e.name}（${dateRange(e)}）の盆踊り情報。${e.time ? "踊り開始" + e.time + "〜。" : ""}${e.venue ? "会場: " + e.venue + "。" : ""}${ss.length ? "踊れる曲: " + ss.slice(0, 4).join("・") + "。" : ""}屋台・アクセス・地図もチェック。`.slice(0, 160);
 
-  // 同エリアの盆踊り (内部リンク)。開催日順に最大6件
   const related = events
     .filter(x => x.eid !== e.eid && x.area && x.area === e.area)
     .sort((a, b) => (a.start || "9999").localeCompare(b.start || "9999"))
     .slice(0, 6);
-  // エリア外も含め開催日が近いもの4件
   const near = e.start ? events
     .filter(x => x.eid !== e.eid && x.start && !related.some(r => r.eid === x.eid))
     .sort((a, b) => Math.abs(jd(a.start) - jd(e.start)) - Math.abs(jd(b.start) - jd(e.start)))
     .slice(0, 4) : [];
-
   const relRow = x => `<li><a href="/event/${H(x.eid)}">${H(x.name)}</a><span class="rd">${x.start ? fmtDate(x.start) : "日程調査中"}${x.time ? "・" + H(x.time) + "〜" : ""}</span></li>`;
 
-  const rows = [
-    ["日程", dateRange(e)],
-    ["踊り開始", e.time ? e.time + "〜" : "調査中"],
-    ["会場", e.venue || "調査中"],
-    ["最寄駅", e.station || "調査中"],
-    ["エリア", e.area || "調査中"],
-    ["踊れる曲", e.songs || "情報募集中"],
-  ].map(([k, v]) => `<tr><th>${H(k)}</th><td>${H(v)}</td></tr>`).join("");
+  // 属性バッジは常時表示。該当すれば色付き、非該当は激薄(saunaikitai式)。おどったーオススメは一覧ページのみ
+  const badgeDefs = [
+    { on: e.yatai === "あり", label: e.yatai === "あり" ? "屋台あり" : "屋台" },
+    { on: !!e.rain, label: e.rain ? "雨天" + H(e.rain) : "雨天情報なし" }
+  ];
+  const chips = badgeDefs.map(b => `<span class="chip${b.on ? "" : " off"}">${b.label}</span>`).join("");
+
+  const timeVal = e.time
+    ? `${e.t_open ? "開場" + H(e.t_open) + " / " : ""}踊り開始 <b style="color:var(--accentD)">${H(e.time)}</b>${e.t_end ? " / 終了" + H(e.t_end) : ""}`
+    : `<span style="color:var(--sub)">時間調査中</span>`;
+  const mapCell = e.venue
+    ? `${H(e.venue)} <a class="maplink" href="${mapUrl(e)}" target="_blank" rel="noopener">google map</a>`
+    : `<span style="color:var(--sub)">調査中</span>`;
+  // 曲目: 出現の多い順。該当曲のみ表示(薄表示はしない)
+  const songVal = ss.length
+    ? `<div class="stags">${ss.map(s => `<span class="ptag">${H(s)}</span>`).join("")}</div>`
+    : `<span style="color:var(--sub)">情報募集中 — <a href="${FORM_URL}" target="_blank" rel="noopener">情報提供</a></span>`;
+
+  const intro = `${H(e.area || "東京")}${e.venue ? "「" + H(e.venue) + "」" : ""}で開催される盆踊り${e.start ? "（" + H(dateRange(e)) + "）" : ""}。${e.time ? "踊り開始は" + H(e.time) + "ごろ。" : ""}${ss.length ? "「" + H(ss[0]) + "」など" + ss.length + "曲が踊れます。" : ""}${e.station ? "最寄りは" + H(e.station) + "。" : ""}`;
+  const hasDetail = e.time || ss.length || e.desc || e.yatai || e.rain || e.organizer || e.t_open || e.kai;
+  const summary = e.desc
+    ? H(e.desc)
+    : hasDetail
+      ? intro
+      : `${e.venue ? H(e.venue) : H(e.name)}で開催される${e.area ? H(e.area) + "の" : ""}地域密着型の盆踊り。${yr}年の日程・時間・屋台などの詳細はわかり次第更新します。`;
+  const posterIsPdf = /\.pdf(\?|#|$)/i.test(e.poster || "");
+  const posterBlock = e.poster
+    ? (posterIsPdf
+      ? `<div class="poster pdf"><a class="btn" href="${H(e.poster)}" target="_blank" rel="noopener">📄 ポスター/チラシを見る（PDF）</a><div class="pcap">出典: ${e.site ? `<a href="${H(e.site)}" target="_blank" rel="noopener">公式サイト</a>` : "主催者"}</div></div>`
+      : `<figure class="poster"><img src="${H(e.poster)}" alt="${H(e.name)}のポスター" loading="lazy"><figcaption>ポスター出典: ${e.site ? `<a href="${H(e.site)}" target="_blank" rel="noopener">公式サイト</a>` : "主催者"}</figcaption></figure>`)
+    : "";
+  const posterImg = (!posterIsPdf && e.poster) || "";
+
+  const evUrl = `${ORIGIN}/event/${e.eid}`;
+  const inviteText = `【盆踊りのお誘い】\nShall we BON dance?\n${e.kai ? "第" + e.kai + "回 " : ""}${e.name}\n${dateRange(e)}\n\nおどったー｜日本最大級の盆踊り情報サイト\n${evUrl}`;
+  const SH = {
+    name: e.name, date: dateRange(e), venue: e.venue || "調査中",
+    station: e.station || "", area: e.area || "", kai: e.kai ? ("第" + e.kai + "回 ") : "",
+    url: evUrl, invite: inviteText
+  };
 
   return `<!DOCTYPE html>
 <html lang="ja">
@@ -206,79 +239,169 @@ function renderEventPage(e, events) {
 <meta property="og:title" content="${H(title)}">
 <meta property="og:description" content="${H(desc)}">
 <meta property="og:url" content="${ORIGIN}/event/${H(e.eid)}">
-<meta property="og:image" content="${ORIGIN}/assets/ogp.png">
+<meta property="og:image" content="${e.image || posterImg || ORIGIN + "/assets/ogp.png"}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="${ORIGIN}/assets/ogp.png">
+<meta name="twitter:image" content="${e.image || posterImg || ORIGIN + "/assets/ogp.png"}">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon-180.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <script type="application/ld+json">${eventJsonLd(e)}</script>
 <style>
-  :root{--bg:#eaf4fb;--card:#ffffff;--ink:#0f1419;--sub:#5b7083;--line:#e3eaef;--accent:#1da1f2;--accentD:#1a8cd8;--tint:#e8f5fd;--like:#f4326e;--max:480px}
-  *{box-sizing:border-box;margin:0}
-  html,body{background:var(--bg);color:var(--ink);line-height:1.8;
+  :root{--bg:#eaf4fb;--card:#fff;--ink:#0f1419;--sub:#5b7083;--line:#e3eaef;--line2:#cfdee9;--accent:#1da1f2;--accentD:#1a8cd8;--tint:#e8f5fd;--like:#f4326e;--max:480px}
+  *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+  html,body{background:var(--bg);color:var(--ink);line-height:1.45;
     font-family:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic UI","Yu Gothic",-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased}
   .app{max-width:var(--max);margin:0 auto;background:var(--card);min-height:100vh}
-  .head{background:radial-gradient(135% 105% at 50% -15%, #3cb0f7 0%, var(--accent) 48%, #1690dd 100%);
-    color:#fff;padding:26px 20px 22px;text-align:center}
-  .head .bk{display:inline-block;color:#fff;font-size:.75rem;text-decoration:underline;opacity:.9;margin-bottom:10px}
-  .head h1{font-size:1.2rem;font-weight:800;line-height:1.4}
-  .head .hd{font-size:.85rem;font-weight:700;margin-top:6px;opacity:.95}
-  .bdg{display:inline-block;font-size:.7rem;font-weight:800;padding:2px 10px;border-radius:999px;background:#fff;color:var(--accentD);margin-bottom:8px}
-  .bdg.end{background:rgba(255,255,255,.7);color:var(--sub)}
-  .body{padding:22px 20px 40px}
-  h2{font-size:.95rem;font-weight:800;margin:24px 0 8px;padding-left:10px;border-left:4px solid var(--accent)}
-  p,li,td,th{font-size:.85rem}
-  table{width:100%;border-collapse:collapse;margin:8px 0}
-  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
-  th{white-space:nowrap;background:var(--tint);font-weight:700;width:30%}
-  a{color:var(--accentD)}
-  .note{background:var(--tint);border-radius:10px;padding:12px 14px;font-size:.78rem;color:var(--sub);margin-top:14px}
-  .btn{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:.85rem;
-    padding:10px 20px;border-radius:999px;text-decoration:none;margin:8px 6px 0 0}
-  .btn.ghost{background:#fff;color:var(--accentD);border:1.5px solid var(--accentD)}
-  ul.rel{list-style:none;padding:0}
-  ul.rel li{padding:8px 0;border-bottom:1px solid var(--line)}
-  ul.rel a{font-weight:700}
-  .rd{display:block;font-size:.75rem;color:var(--sub)}
-  .adslot{margin:22px 0 4px;min-height:100px}
-  .foot{padding:22px 16px 30px;text-align:center;background:var(--bg);border-top:1px solid var(--line)}
-  .foot a{font-size:.8rem;font-weight:700;color:var(--accentD);margin:0 8px}
+  .phead{position:sticky;top:0;z-index:5;background:var(--accent);color:#fff;display:flex;align-items:center;gap:8px;padding:11px 12px}
+  .phead a.bk{color:#fff;text-decoration:none;font-size:1.3rem;line-height:1;padding:0 4px}
+  .ptitle{font-weight:800;font-size:.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pbody{padding:14px 14px 20px}
+  .phero{background:var(--tint);border-radius:16px;padding:15px 16px;margin-bottom:12px}
+  .pdt{font-size:.72rem;color:var(--accentD);font-weight:800;margin-bottom:5px}
+  .bdg{font-size:.62rem;font-weight:800;padding:1px 8px;border-radius:20px}
+  .bdg.soon{color:var(--accentD);background:#fff}
+  .bdg.live{color:#fff;background:var(--accent)}
+  .bdg.end,.bdg.tbd{color:var(--sub);background:#e6ebf0}
+  .pname{font-size:1.5rem;font-weight:900;line-height:1.3;color:var(--ink)}
+  .pdate{margin-top:9px;font-size:1.02rem;font-weight:800;color:var(--accentD)}
+  .podori{margin-top:10px;font-size:.95rem;font-weight:800;color:var(--ink)}
+  .podori b{font-size:1.15rem}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+  .chip{font-size:.7rem;font-weight:700;color:var(--accentD);background:var(--tint);border:1px solid #d7e6f2;border-radius:20px;padding:3px 10px}
+  .chip.off{color:#c3ccd3;background:#f7f9fb;border-color:#eef1f4;font-weight:400}
+  .psec{font-size:.74rem;font-weight:800;color:var(--sub);letter-spacing:.04em;margin:2px 2px 7px}
+  .pnote{font-size:.85rem;color:#3d4d5c;line-height:1.75;background:#f6f9fb;border-radius:14px;padding:13px 15px;margin-bottom:16px}
+  .pcard{border:1px solid var(--line2);border-radius:16px;overflow:hidden;margin-bottom:14px}
+  .pitem{display:flex;gap:12px;padding:11px 15px;border-bottom:1px solid var(--line);font-size:.87rem}
+  .pitem:last-child{border-bottom:none}
+  .pitem .pl{flex:0 0 74px;color:var(--sub);font-weight:700}
+  .pitem .pv{flex:1;color:var(--ink);line-height:1.55}
+  .maplink{font-size:.78rem}
+  .stags{display:flex;gap:6px;flex-wrap:wrap}
+  .ptag{font-size:.74rem;font-weight:700;color:var(--accentD);background:var(--tint);border-radius:20px;padding:3px 10px}
+  .ptag.dim{color:#9aa4ad;background:#f1f4f7;font-weight:400}
+  .formlink{display:inline-block;color:var(--accentD);font-size:.8rem;font-weight:700;text-decoration:underline;margin-bottom:14px}
+  .pacts{display:flex;flex-direction:column;gap:9px;margin:4px 0 12px}
+  .pacts .btn{padding:15px;font-size:.95rem;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:6px;
+    border:1px solid var(--line2);background:#fff;color:var(--ink);cursor:pointer;font-family:inherit;font-weight:800;text-decoration:none}
+  .pacts .btn.primary{background:var(--like);border-color:var(--like);color:#fff;font-size:1.05rem}
+  .pacts .heartbtn{color:var(--like);border-color:#f3c2cf}
+  .pacts .heartbtn.on{background:var(--like);color:#fff;border-color:var(--like)}
+  .pofficial2{display:inline-block;margin:2px 0 14px;color:#8a94a0;font-size:.78rem;font-weight:700;text-decoration:underline}
+  .adslot{margin:8px 0;min-height:90px}
+  .poster{margin:8px 0 4px}
+  .poster img{width:100%;border-radius:14px;border:1px solid var(--line2);display:block}
+  .poster figcaption{font-size:.7rem;color:var(--sub);text-align:center;margin-top:5px}
+  .poster.pdf a.btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:14px;border:1px solid var(--line2);border-radius:12px;background:#fff;color:var(--accentD);font-weight:800;font-size:.9rem;text-decoration:none}
+  .poster.pdf .pcap{font-size:.7rem;color:var(--sub);text-align:center;margin-top:5px}
+  .rel{list-style:none;padding:0;margin:4px 0 8px}
+  .rel li{padding:9px 2px;border-bottom:1px solid var(--line)}
+  .rel a{font-weight:800;color:var(--accentD);text-decoration:none;font-size:.85rem}
+  .rd{display:block;font-size:.72rem;color:var(--sub);margin-top:1px}
+  .src{font-size:.72rem;color:var(--sub);margin:14px 2px 0;line-height:1.6}
+  .foot{padding:22px 16px 30px;text-align:center;background:var(--bg);border-top:1px solid var(--line);margin-top:20px}
+  .foot a{font-size:.8rem;font-weight:700;color:var(--accentD);margin:0 8px;text-decoration:none}
   .footcredit{margin-top:10px;font-size:.7rem;color:var(--sub)}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(16px);background:#0f1419;color:#fff;padding:8px 15px;border-radius:20px;font-size:.8rem;opacity:0;pointer-events:none;transition:.22s;z-index:90}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .invitebox{margin-bottom:10px}
+  .inviteimg{display:block;width:100%;max-width:220px;margin:0 auto 10px;border-radius:12px;border:1px solid var(--line2)}
+  .ibtn{width:100%;border:1px solid var(--line2);background:#fff;border-radius:12px;padding:13px;font-size:.9rem;font-weight:800;color:var(--ink);cursor:pointer;font-family:inherit}
+  .ibtn.img{background:var(--like);border-color:var(--like);color:#fff;font-size:1rem;margin-top:8px}
+  .irow{display:flex;gap:8px}
+  .irow .ibtn{flex:1;padding:11px;font-size:.82rem}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="head">
-    <a class="bk" href="/">← 盆踊り一覧（おどったー トップ）</a>
-    <div><span class="bdg ${st.c}">${H(st.t)}</span></div>
-    <h1>${H(e.name)}</h1>
-    <div class="hd">${H(dateRange(e))}${e.time ? "・" + H(e.time) + "〜" : ""}</div>
-  </div>
-  <div class="body">
-    <p>${H(e.area || "東京")}${e.venue ? "の「" + H(e.venue) + "」" : ""}で開催される盆踊りイベント${e.start ? "（" + H(dateRange(e)) + "）" : ""}の情報ページです。${e.feature ? H(e.feature) : ""}</p>
+  <div class="phead"><a class="bk" href="/" aria-label="盆踊り一覧へ戻る">←</a><div class="ptitle">${H(e.name)}</div></div>
+  <div class="pbody">
+    <div class="phero">
+      <div class="pdt"><span class="bdg ${st.c}">${H(st.t)}</span>${e.kai ? " 第" + H(e.kai) + "回" : ""}</div>
+      <div class="pname">${H(e.name)}</div>
+      <div class="pdate">${H(dateRange(e))}</div>
+      <div class="podori">♪ 踊り開始 <b>${e.time ? H(e.time) : "時間調査中"}</b>${(e.t_open || e.t_end) ? `<span style="font-size:.72rem;font-weight:500;color:var(--sub)"> （${e.t_open ? "開場" + H(e.t_open) : ""}${e.t_end ? (e.t_open ? "・" : "") + "終了" + H(e.t_end) : ""}）</span>` : ""}</div>
+    </div>
+    ${chips ? `<div class="chips">${chips}</div>` : ""}
 
-    <h2>開催情報</h2>
-    <table>${rows}</table>
-    ${e.feature ? `<h2>特徴・見どころ</h2><p>${H(e.feature)}</p>` : ""}
-
-    <div>
-      ${e.site ? `<a class="btn" href="${H(e.site)}" target="_blank" rel="noopener">${e.siteType === "official" ? "公式サイトで最新情報を確認" : "参考サイトを見る"}</a>` : ""}
-      <a class="btn ghost" href="/#e/${H(e.eid)}">アプリで開く（行きたい登録）</a>
+    <div class="psec">開催情報</div>
+    <div class="pcard">
+      <div class="pitem"><span class="pl">踊り始め</span><span class="pv">${timeVal}</span></div>
+      <div class="pitem"><span class="pl">会場</span><span class="pv">${mapCell}</span></div>
+      <div class="pitem"><span class="pl">エリア</span><span class="pv">${H(e.area || "—")}${e.station ? " " + H(e.station) : ""}</span></div>
+      ${e.organizer ? `<div class="pitem"><span class="pl">主催</span><span class="pv">${H(e.organizer)}</span></div>` : ""}
+      <div class="pitem"><span class="pl">踊れる曲</span><span class="pv">${songVal}</span></div>
     </div>
 
-    <div class="note">掲載情報は公開時点のものです。日程・時間・会場は天候や主催者の判断で変更・中止となる場合があります。おでかけ前に必ず公式情報をご確認ください。誤りを見つけた場合は<a href="${FORM_URL}" target="_blank" rel="noopener">情報提供フォーム</a>からご連絡ください。</div>
+    <div class="psec">概要</div>
+    <div class="pnote">${summary}</div>
+
+    <a class="formlink" href="${FORM_URL}" target="_blank" rel="noopener">この盆踊りの情報を提供・修正する</a>
+
+    <div class="psec">友達を誘う</div>
+    <div class="invitebox">
+      <img id="inviteImg" class="inviteimg" alt="${H(e.name)}のお誘い画像">
+      <div class="irow">
+        <button class="ibtn" type="button" onclick="lineInvite()">LINE</button>
+        <button class="ibtn" type="button" onclick="xInvite()">X</button>
+        <button class="ibtn" type="button" onclick="copyInvite()">コピー</button>
+      </div>
+      <button class="ibtn img" type="button" onclick="shareImgFile()">画像を保存・共有</button>
+    </div>
+    <div class="pacts">
+      <button class="btn heartbtn" id="hb" type="button"><span>♡ 行きたい</span> <b id="hc">0</b></button>
+    </div>
+
+    ${e.site ? `<a class="pofficial2" href="${H(e.site)}" target="_blank" rel="noopener">出典: 公式サイト</a>` : ""}
 
     <div class="adslot"><ins class="adsbygoogle" style="display:block" data-ad-client="${ADSENSE_CLIENT}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
 
-    ${related.length ? `<h2>${H(e.area)}の盆踊り</h2><ul class="rel">${related.map(relRow).join("")}</ul>` : ""}
-    ${near.length ? `<h2>開催日が近い盆踊り</h2><ul class="rel">${near.map(relRow).join("")}</ul>` : ""}
+    ${posterBlock ? `<div class="psec">ポスター</div>${posterBlock}` : ""}
+
+    ${related.length ? `<div class="psec">${H(e.area)}の盆踊り</div><ul class="rel">${related.map(relRow).join("")}</ul>` : ""}
+    ${near.length ? `<div class="psec">開催日が近い盆踊り</div><ul class="rel">${near.map(relRow).join("")}</ul>` : ""}
+
+    <div class="src">変更・中止の場合あり。おでかけ前に公式でご確認ください。</div>
   </div>
   <footer class="foot">
     <a href="/">盆踊り一覧</a><a href="/about.html">運営者情報</a><a href="/privacy.html">プライバシーポリシー</a>
     <div class="footcredit">おどったー｜日本最大級の盆踊り情報サイト</div>
   </footer>
 </div>
+
+<canvas id="shCanvas" width="1080" height="1920" style="display:none"></canvas>
+<div class="toast" id="toast"></div>
+
+<script>
+var SH=${JSON.stringify(SH)};
+function toast(m){var t=document.getElementById("toast");t.textContent=m;t.className="toast show";setTimeout(function(){t.className="toast";},2000);}
+function copyInvite(){if(navigator.clipboard){navigator.clipboard.writeText(SH.invite).then(function(){toast("コピーしました。LINEに貼り付けて送ってね");}).catch(function(){toast("コピーできませんでした");});}else{window.prompt("コピーしてください",SH.invite);}}
+function lineInvite(){window.open("https://line.me/R/msg/text/?"+encodeURIComponent(SH.invite),"_blank","noopener");}
+function xInvite(){window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(SH.name+"（"+SH.date+"）に行こう！")+"&url="+encodeURIComponent(SH.url),"_blank","noopener");}
+function rr(x,X,Y,W,Hh,R){x.beginPath();x.moveTo(X+R,Y);x.arcTo(X+W,Y,X+W,Y+Hh,R);x.arcTo(X+W,Y+Hh,X,Y+Hh,R);x.arcTo(X,Y+Hh,X,Y,R);x.arcTo(X,Y,X+W,Y,R);x.closePath();}
+function wrap(x,text,X,Y,maxW,lh){var cs=Array.from(text),line="",yy=Y;for(var i=0;i<cs.length;i++){var t=line+cs[i];if(x.measureText(t).width>maxW&&line){x.fillText(line,X,yy);line=cs[i];yy+=lh;}else line=t;}if(line)x.fillText(line,X,yy);return yy;}
+function drawCard(){var c=document.getElementById("shCanvas");c.width=1080;c.height=1920;var x=c.getContext("2d");
+x.fillStyle="#1da1f2";x.fillRect(0,0,1080,1920);var g=x.createLinearGradient(0,0,0,1300);g.addColorStop(0,"#3cb0f7");g.addColorStop(1,"#1a97e6");x.fillStyle=g;x.fillRect(0,0,1080,1300);
+x.textAlign="left";x.fillStyle="rgba(255,255,255,.9)";x.font="600 30px 'M PLUS Rounded 1c','Hiragino Sans',sans-serif";x.fillText("日本最大級の盆踊り情報サイト",60,92);x.fillText("2026年盆踊り日程一覧",60,134);
+x.textAlign="center";x.fillStyle="#fff";x.font="900 168px 'M PLUS Rounded 1c','Hiragino Maru Gothic ProN','Hiragino Sans',sans-serif";x.fillText("おどったー",540,420);
+x.font="800 54px 'M PLUS Rounded 1c','Hiragino Sans',sans-serif";x.fillStyle="rgba(255,255,255,.96)";x.fillText("Shall we BON dance?",540,520);
+x.fillStyle="#fff";rr(x,70,660,940,600,40);x.fill();x.textAlign="left";x.fillStyle="#0f1419";x.font="900 66px 'M PLUS Rounded 1c','Hiragino Sans',sans-serif";
+var yy=wrap(x,SH.kai+SH.name,120,762,800,80)+34;
+function row(label,val){yy+=78;x.fillStyle="#8a94a0";x.font="bold 38px 'M PLUS Rounded 1c','Hiragino Sans',sans-serif";x.fillText(label,120,yy);x.fillStyle="#0f1419";x.font="40px 'M PLUS Rounded 1c','Hiragino Sans',sans-serif";x.fillText(val,300,yy);}
+row("日程",SH.date);row("会場",SH.venue);row("最寄",SH.station+(SH.area?"・"+SH.area:""));return c;}
+function renderInvite(){var c=drawCard();var img=document.getElementById("inviteImg");if(img)img.src=c.toDataURL("image/png");window._sf=null;window._blob=null;c.toBlob(function(b){if(!b)return;window._blob=b;if(navigator.canShare){try{var f=new File([b],"odottar.png",{type:"image/png"});if(navigator.canShare({files:[f]}))window._sf=f;}catch(e){}}},"image/png");}
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(renderInvite);}else{renderInvite();}
+function shareImgFile(){if(window._sf&&navigator.share){navigator.share({files:[window._sf],text:SH.invite}).catch(function(){});}else if(window._blob){var a=document.createElement("a");a.href=URL.createObjectURL(window._blob);a.download="odottar.png";document.body.appendChild(a);a.click();a.remove();}else{toast("画像を保存してください");}}
+(function(){var EID=${JSON.stringify(e.eid)},KEY="odottar_kininaru_v2",CK="odottar_cid_v1";
+function gl(){try{return JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){return{}}}
+function cid(){var c="";try{c=localStorage.getItem(CK)||"";if(!c){c=(self.crypto&&crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(36).slice(2));localStorage.setItem(CK,c);}}catch(e){}return c;}
+var b=document.getElementById("hb"),c=document.getElementById("hc"),liked=!!gl()[EID],remote=null;
+function paint(){b.className="btn heartbtn"+(liked?" on":"");b.firstChild.textContent=liked?"♥ 行きたい済":"♡ 行きたい";c.textContent=(remote!=null?remote:(liked?1:0));}
+paint();
+fetch("/api/counts").then(function(r){return r.json();}).then(function(j){if(j&&j[EID]!=null){remote=j[EID];paint();}}).catch(function(){});
+b.addEventListener("click",function(){var L=gl(),op;if(L[EID]){delete L[EID];liked=false;op="dec";}else{L[EID]=true;liked=true;op="inc";}try{localStorage.setItem(KEY,JSON.stringify(L));}catch(e){}paint();fetch("/api/hit?k="+encodeURIComponent(EID)+"&op="+op+"&id="+encodeURIComponent(cid()),{method:"POST"}).then(function(r){return r.json();}).then(function(j){if(j&&j.count!=null){remote=j.count;paint();}}).catch(function(){});});
+})();
+</script>
 </body>
 </html>`;
 }
@@ -291,7 +414,6 @@ async function getEventPage(env, request) {
   if (!events) return new Response("events.json not found", { status: 500, headers: SECURITY_HEADERS });
   const e = key && events.find(x => x.eid === key);
   if (!e) {
-    // 不明IDはトップへ (SPA側のname/idルーティングはハッシュで担保)
     return Response.redirect(url.origin + "/", 302);
   }
   return new Response(renderEventPage(e, events), {
@@ -320,24 +442,10 @@ ${urls.map(u => `  <url><loc>${u.loc}</loc><lastmod>${today}</lastmod><changefre
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-
-    if (url.pathname === "/api/counts" && request.method === "GET") {
-      return getCounts(env);
-    }
-
-    if (url.pathname === "/api/hit" && request.method === "POST") {
-      return postHit(env, request);
-    }
-
-    if (url.pathname.startsWith("/event/") && request.method === "GET") {
-      return getEventPage(env, request);
-    }
-
-    if (url.pathname === "/sitemap.xml") {
-      return getSitemap(env, request);
-    }
-
-    // 静的アセットにもセキュリティヘッダを付与
+    if (url.pathname === "/api/counts" && request.method === "GET") return getCounts(env);
+    if (url.pathname === "/api/hit" && request.method === "POST") return postHit(env, request);
+    if (url.pathname.startsWith("/event/") && request.method === "GET") return getEventPage(env, request);
+    if (url.pathname === "/sitemap.xml") return getSitemap(env, request);
     const res = await env.ASSETS.fetch(request);
     const headers = new Headers(res.headers);
     for (const [h, v] of Object.entries(SECURITY_HEADERS)) headers.set(h, v);
