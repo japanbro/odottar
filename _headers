@@ -1,4 +1,10 @@
+# Cloudflare Pages 用セキュリティヘッダ (Pagesデプロイ時に適用)
+# Workersデプロイ側は worker.js が同等ヘッダを付与する
 /*
-  X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
