@@ -1143,7 +1143,7 @@ function renderPage(name){
   const posterCap=`ポスター出典: ${e.site?`<a href="${safeHref(e.site)}" target="_blank" rel="noopener">公式サイト</a>`:"主催者"}`;
   const posterBlock=e.poster?(posterIsPdf
     ?`<div class="psec">ポスター</div><div class="pposter pdf"><a class="pbtn" href="${safeHref(e.poster)}" target="_blank" rel="noopener">📄 ポスター/チラシを見る（PDF）</a><div class="pcap">${posterCap}</div></div>`
-    :`<div class="psec">ポスター</div><figure class="pposter"><img src="${safeHref(e.poster)}" alt="${H(e.name)}のポスター" loading="lazy"><figcaption>${posterCap}</figcaption></figure>`):"";
+    :`<div class="psec">ポスター</div><figure class="pposter"><img src="${safeHref(e.poster)}" alt="${H(e.name)}のポスター" decoding="async"><figcaption>${posterCap}</figcaption></figure>`):"";
   document.getElementById("pBody").innerHTML=`
     <div class="phero">
       <div class="pdt"><span class="bdg ${st.c}">${st.t}</span>${e.kai?" "+H(e.kai):""}</div>
