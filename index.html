@@ -817,7 +817,11 @@ function shortDate(e){
   return `<span class="mn">${s.getMonth()+1}/${s.getDate()}</span><span class="wd">${WD[s.getDay()]}${multi?"〜":""}</span>`;
 }
 function longDate(e){if(!e.start)return"日程未定";const f=x=>`${x.getMonth()+1}/${x.getDate()}(${WD[x.getDay()]})`;
-  const body=(e.end&&e.end!==e.start)?f(d(e.start))+"〜"+f(d(e.end)):f(d(e.start));return "2026年 "+body;}
+  if(!(e.end&&e.end!==e.start))return "2026年 "+f(d(e.start));
+  const s=d(e.start),en=d(e.end);
+  /* 同月内の期間は〜以降の月を省略: 8/9(金)〜10(土)。月またぎはそのまま: 8/31(土)〜9/1(日) */
+  const tail=s.getMonth()===en.getMonth()?`${en.getDate()}(${WD[en.getDay()]})`:f(en);
+  return "2026年 "+f(s)+"〜"+tail;}
 function statusOf(e){
   if(e.status==="中止")return"cxl";
   if(!e.start)return"tbd";
