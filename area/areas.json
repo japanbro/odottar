@@ -1,170 +1,34 @@
-[
- {
-  "area": "千代田区",
-  "slug": "chiyoda",
-  "total": 8,
-  "upcoming": 3
- },
- {
-  "area": "中央区",
-  "slug": "chuo",
-  "total": 14,
-  "upcoming": 5
- },
- {
-  "area": "港区",
-  "slug": "minato",
-  "total": 16,
-  "upcoming": 5
- },
- {
-  "area": "新宿区",
-  "slug": "shinjuku",
-  "total": 15,
-  "upcoming": 4
- },
- {
-  "area": "文京区",
-  "slug": "bunkyo",
-  "total": 1,
-  "upcoming": 0
- },
- {
-  "area": "台東区",
-  "slug": "taito",
-  "total": 12,
-  "upcoming": 3
- },
- {
-  "area": "墨田区",
-  "slug": "sumida",
-  "total": 4,
-  "upcoming": 0
- },
- {
-  "area": "江東区",
-  "slug": "koto",
-  "total": 41,
-  "upcoming": 19
- },
- {
-  "area": "品川区",
-  "slug": "shinagawa",
-  "total": 21,
-  "upcoming": 8
- },
- {
-  "area": "目黒区",
-  "slug": "meguro",
-  "total": 5,
-  "upcoming": 1
- },
- {
-  "area": "大田区",
-  "slug": "ota",
-  "total": 26,
-  "upcoming": 5
- },
- {
-  "area": "世田谷区",
-  "slug": "setagaya",
-  "total": 28,
-  "upcoming": 6
- },
- {
-  "area": "渋谷区",
-  "slug": "shibuya",
-  "total": 7,
-  "upcoming": 3
- },
- {
-  "area": "中野区",
-  "slug": "nakano",
-  "total": 7,
-  "upcoming": 2
- },
- {
-  "area": "杉並区",
-  "slug": "suginami",
-  "total": 1,
-  "upcoming": 1
- },
- {
-  "area": "豊島区",
-  "slug": "toshima",
-  "total": 14,
-  "upcoming": 1
- },
- {
-  "area": "北区",
-  "slug": "kita",
-  "total": 3,
-  "upcoming": 3
- },
- {
-  "area": "荒川区",
-  "slug": "arakawa",
-  "total": 8,
-  "upcoming": 8
- },
- {
-  "area": "板橋区",
-  "slug": "itabashi",
-  "total": 10,
-  "upcoming": 2
- },
- {
-  "area": "練馬区",
-  "slug": "nerima",
-  "total": 10,
-  "upcoming": 3
- },
- {
-  "area": "足立区",
-  "slug": "adachi",
-  "total": 64,
-  "upcoming": 25
- },
- {
-  "area": "葛飾区",
-  "slug": "katsushika",
-  "total": 28,
-  "upcoming": 15
- },
- {
-  "area": "江戸川区",
-  "slug": "edogawa",
-  "total": 89,
-  "upcoming": 59
- },
- {
-  "area": "八王子市",
-  "slug": "hachioji",
-  "total": 1,
-  "upcoming": 1
- },
- {
-  "area": "立川市",
-  "slug": "tachikawa",
-  "total": 1,
-  "upcoming": 1
- },
- {
-  "area": "武蔵野市",
-  "slug": "musashino",
-  "total": 2,
-  "upcoming": 0
- },
- {
-  "area": "日の出町",
-  "slug": "hinode",
-  "total": 1,
-  "upcoming": 0
- },
- {
-  "area": "大島町",
-  "slug": "oshima",
-  "total": 8,
-  "upcoming": 1
- }
-]
+{
+ "paths": [
+  "/area/",
+  "/area/tokyo/",
+  "/area/tokyo/chiyoda",
+  "/area/tokyo/chuo",
+  "/area/tokyo/minato",
+  "/area/tokyo/shinjuku",
+  "/area/tokyo/bunkyo",
+  "/area/tokyo/taito",
+  "/area/tokyo/sumida",
+  "/area/tokyo/koto",
+  "/area/tokyo/shinagawa",
+  "/area/tokyo/meguro",
+  "/area/tokyo/ota",
+  "/area/tokyo/setagaya",
+  "/area/tokyo/shibuya",
+  "/area/tokyo/nakano",
+  "/area/tokyo/suginami",
+  "/area/tokyo/toshima",
+  "/area/tokyo/kita",
+  "/area/tokyo/arakawa",
+  "/area/tokyo/itabashi",
+  "/area/tokyo/nerima",
+  "/area/tokyo/adachi",
+  "/area/tokyo/katsushika",
+  "/area/tokyo/edogawa",
+  "/area/tokyo/hachioji",
+  "/area/tokyo/tachikawa",
+  "/area/tokyo/musashino",
+  "/area/tokyo/hinode",
+  "/area/tokyo/oshima"
+ ]
+}

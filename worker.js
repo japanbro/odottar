@@ -441,20 +441,22 @@ async function getEventPage(env, request) {
 async function getSitemap(env, request) {
   const today = todayJST();
   const events = (await loadEvents(env, request)) || [];
-  // エリア別ページ（/area/<slug>.html）: gen_area_pages.py が出力する areas.json を参照
-  let areas = [];
+  // エリア別ページ: gen_area_pages.py が出力する areas.json の paths（都道府県階層）を参照
+  let areaPaths = [];
   try {
     const u = new URL(request.url);
     const ar = await env.ASSETS.fetch(new Request(u.origin + "/area/areas.json"));
-    if (ar.ok) areas = await ar.json();
+    if (ar.ok) {
+      const j = await ar.json();
+      areaPaths = Array.isArray(j) ? j.map(a => `/area/${a.slug}`) : (j.paths || []);
+    }
   } catch (_) { /* areas.json 未配置でも sitemap は従来通り返す */ }
   const urls = [
     { loc: `${ORIGIN}/`, changefreq: "daily", priority: "1.0" },
     { loc: `${ORIGIN}/guide.html`, changefreq: "monthly", priority: "0.8" },
     { loc: `${ORIGIN}/about.html`, changefreq: "yearly", priority: "0.3" },
     { loc: `${ORIGIN}/privacy.html`, changefreq: "yearly", priority: "0.3" },
-    ...(areas.length ? [{ loc: `${ORIGIN}/area/`, changefreq: "daily", priority: "0.8" }] : []),
-    ...areas.map(a => ({ loc: `${ORIGIN}/area/${a.slug}`, changefreq: "daily", priority: "0.8" })),
+    ...areaPaths.map(p => ({ loc: `${ORIGIN}${p}`, changefreq: "daily", priority: "0.8" })),
     ...events.map(e => ({ loc: `${ORIGIN}/event/${e.eid}`, changefreq: "weekly", priority: "0.7" }))
   ];
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

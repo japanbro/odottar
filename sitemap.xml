@@ -31,169 +31,175 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/chiyoda</loc>
+    <loc>https://odottar.com/area/tokyo/</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/chuo</loc>
+    <loc>https://odottar.com/area/tokyo/chiyoda</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/minato</loc>
+    <loc>https://odottar.com/area/tokyo/chuo</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/shinjuku</loc>
+    <loc>https://odottar.com/area/tokyo/minato</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/bunkyo</loc>
+    <loc>https://odottar.com/area/tokyo/shinjuku</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/taito</loc>
+    <loc>https://odottar.com/area/tokyo/bunkyo</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/sumida</loc>
+    <loc>https://odottar.com/area/tokyo/taito</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/koto</loc>
+    <loc>https://odottar.com/area/tokyo/sumida</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/shinagawa</loc>
+    <loc>https://odottar.com/area/tokyo/koto</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/meguro</loc>
+    <loc>https://odottar.com/area/tokyo/shinagawa</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/ota</loc>
+    <loc>https://odottar.com/area/tokyo/meguro</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/setagaya</loc>
+    <loc>https://odottar.com/area/tokyo/ota</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/shibuya</loc>
+    <loc>https://odottar.com/area/tokyo/setagaya</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/nakano</loc>
+    <loc>https://odottar.com/area/tokyo/shibuya</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/suginami</loc>
+    <loc>https://odottar.com/area/tokyo/nakano</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/toshima</loc>
+    <loc>https://odottar.com/area/tokyo/suginami</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/kita</loc>
+    <loc>https://odottar.com/area/tokyo/toshima</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/arakawa</loc>
+    <loc>https://odottar.com/area/tokyo/kita</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/itabashi</loc>
+    <loc>https://odottar.com/area/tokyo/arakawa</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/nerima</loc>
+    <loc>https://odottar.com/area/tokyo/itabashi</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/adachi</loc>
+    <loc>https://odottar.com/area/tokyo/nerima</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/katsushika</loc>
+    <loc>https://odottar.com/area/tokyo/adachi</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/edogawa</loc>
+    <loc>https://odottar.com/area/tokyo/katsushika</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/hachioji</loc>
+    <loc>https://odottar.com/area/tokyo/edogawa</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/tachikawa</loc>
+    <loc>https://odottar.com/area/tokyo/hachioji</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/musashino</loc>
+    <loc>https://odottar.com/area/tokyo/tachikawa</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/hinode</loc>
+    <loc>https://odottar.com/area/tokyo/musashino</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://odottar.com/area/oshima</loc>
+    <loc>https://odottar.com/area/tokyo/hinode</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://odottar.com/area/tokyo/oshima</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
