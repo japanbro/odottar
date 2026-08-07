@@ -157,7 +157,7 @@ function eventJsonLd(e) {
   if (e.start) ld.startDate = e.time ? `${e.start}T${e.time}:00+09:00` : e.start;
   if (e.end || e.start) ld.endDate = e.end || e.start;
   if (e.lat && e.lng) ld.location.geo = { "@type": "GeoCoordinates", latitude: e.lat, longitude: e.lng };
-  if (e.organizer) ld.organizer = { "@type": "Organization", name: e.organizer, url: e.site || undefined };
+  if (e.organizer) ld.organizer = { "@type": "Organization", name: e.organizer, url: e.site || ORIGIN + "/" };
 
   // image: 推奨項目。常に付与（イベント画像→PDF以外のポスター→サイト共通OGP）
   const posterImg = /\.pdf(\?|#|$)/i.test(e.poster || "") ? "" : e.poster;
