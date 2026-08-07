@@ -214,7 +214,7 @@ function renderEventPage(e, events) {
   // 曲目: 出現の多い順。該当曲のみ表示(薄表示はしない)
   const songVal = ss.length
     ? `<div class="stags">${ss.map(s => `<span class="ptag">${H(s)}</span>`).join("")}</div>`
-    : `<span style="color:var(--sub)">情報募集中 — <a href="${FORM_URL}" target="_blank" rel="noopener">情報提供</a></span>`;
+    : `<span style="color:var(--sub)">情報募集中</span>`;
 
   const intro = `${H(e.area || "東京")}${e.venue ? "「" + H(e.venue) + "」" : ""}で開催される盆踊り${e.start ? "（" + H(dateRange(e)) + "）" : ""}。${e.time ? "踊り開始は" + H(e.time) + "ごろ。" : ""}${ss.length ? "「" + H(ss[0]) + "」など" + ss.length + "曲が踊れます。" : ""}${e.station ? "最寄りは" + H(e.station) + "。" : ""}`;
   const hasDetail = e.time || ss.length || e.desc || e.yatai || e.rain || e.organizer || e.t_open || e.kai;
@@ -354,8 +354,6 @@ function renderEventPage(e, events) {
 
     <div class="psec">概要</div>
     <div class="pnote">${summary}</div>
-
-    <a class="formlink" href="${FORM_URL}" target="_blank" rel="noopener">この盆踊りの情報を提供・修正する</a>
 
     <div class="psec">友達を誘う</div>
     <div class="invitebox">
