@@ -233,6 +233,8 @@
   .adph{border:1px dashed var(--line2);border-radius:12px;padding:26px;text-align:center;color:var(--sub);font-size:.78rem}
   .foot{padding:22px 16px calc(30px + env(safe-area-inset-bottom));text-align:center;background:var(--bg);border-top:1px solid var(--line)}
   .formlink{display:inline-block;color:var(--accentD);font-size:.8rem;font-weight:700;text-decoration:underline}
+  .posterbtn{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;font-size:.85rem;font-weight:700;padding:10px 18px;border-radius:999px;text-decoration:none;box-shadow:0 2px 8px rgba(29,161,242,.35)}
+  .posterbtn:active{background:var(--accentD)}
   .pbody .formlink{margin-top:14px}
   .footcredit{margin-top:10px;font-size:.7rem;color:var(--sub)}
   .psec{font-size:.74rem;font-weight:800;color:var(--sub);letter-spacing:.04em;margin:2px 2px 7px}
@@ -280,6 +282,7 @@
   <div class="empty" id="empty" style="display:none"></div>
   <div class="adslot" id="ad1"></div>
   <footer class="foot">
+    <div style="margin-bottom:14px"><a class="posterbtn" id="posterFooter" href="#" target="_blank" rel="noopener">📮 盆踊りポスターを送る</a></div>
     <a class="formlink" id="formFooter" href="#" target="_blank" rel="noopener">盆踊りの情報を追加・修正する（Googleフォーム）</a>
     <div class="footlinks" style="margin-top:12px"><a class="formlink" href="/about.html">運営者情報・お問い合わせ</a>　<a class="formlink" href="/privacy.html">プライバシーポリシー</a></div>
     <div class="footcredit">おどったー｜日本最大級の盆踊り情報サイト｜2026年盆踊り日程一覧</div>
@@ -341,6 +344,8 @@ const ADSENSE_SLOT="";
 const APP_URL="https://odottar.com";
 /* 情報提供・修正のGoogleフォームURL。設定するとフッター/各ページ下部にリンク表示。 */
 const FORM_URL="https://forms.gle/wDaecLp71c8gWCuV6";
+/* 盆踊りポスター投稿のGoogleフォームURL。フッター/検索0件時に露出。 */
+const POSTER_FORM_URL="https://forms.gle/mqSpyu71XB5ZprNg8";
 const SHEET_CSV_URL="";
 
 let DATA = [
@@ -949,7 +954,7 @@ function render(){
   const from=state.page*PER_PAGE,to=Math.min(from+PER_PAGE,list.length);
   document.getElementById("count").textContent=list.length?`${from+1}〜${to}件目 / 全${list.length}件`:`0件`;
   document.getElementById("orderLabel").textContent="並び："+TABS.find(t=>t.id===state.tab).order;
-  const emptyEl=document.getElementById("empty");emptyEl.style.display=list.length?"none":"block";emptyEl.textContent=state.tab==="liked"?"「おきにいり」はまだ空です。気になる盆踊りのハートを押そう。":"該当する盆踊りがありません。";
+  const emptyEl=document.getElementById("empty");emptyEl.style.display=list.length?"none":"block";emptyEl.innerHTML=state.tab==="liked"?"「おきにいり」はまだ空です。気になる盆踊りのハートを押そう。":'該当する盆踊りがありません。<div style="margin-top:6px">街で見かけた盆踊りポスターも募集中！</div><div style="margin-top:12px"><a class="posterbtn" href="'+POSTER_FORM_URL+'" target="_blank" rel="noopener">📮 盆踊りポスターを送る</a></div>';
   document.getElementById("list").innerHTML=list.slice(from,to).map(e=>{
     const st=ST[statusOf(e)],liked=!!LIKED[e.eid];
     const esc=H(e.name).replace(/\\/g,"\\\\").replace(/&#39;/g,"\\'");
@@ -1234,7 +1239,7 @@ async function loadSheet(){
     if(arr.length){DATA=arr;assignIds();rebuild();}
   }catch(e){}
 }
-function boot(){assignIds();render();loadRemote();initAds();route();var _ff=document.getElementById("formFooter");if(_ff)_ff.href=FORM_URL||"#";}
+function boot(){assignIds();render();loadRemote();initAds();route();var _ff=document.getElementById("formFooter");if(_ff)_ff.href=FORM_URL||"#";var _pf=document.getElementById("posterFooter");if(_pf)_pf.href=POSTER_FORM_URL||"#";}
 if(SHEET_CSV_URL){loadSheet().then(boot).catch(boot);}else{boot();}
 </script>
 </body>
