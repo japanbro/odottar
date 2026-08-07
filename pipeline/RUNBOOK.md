@@ -69,7 +69,8 @@ python3 deploy.py   # index.html, events.json, マスターCSV を GitHub main �
 - `normalize.py` — 名称正規化・eid生成・名寄せキー
 - `apply_overrides.py` — キュレーションCSV(人手の修正・オススメ)をevents.jsonに後がけ上書き
 - `export_csv.py` — events.json→events.csv（人が一覧を閲覧する用）
-- `gen_sitemap.py` — events.json→sitemap.xml（全イベント個別ページを全件収録／SEO発見性）
+- `gen_sitemap.py` — events.json→sitemap.xml（全イベント個別ページ＋エリア別ページを収録／SEO発見性）
+- `gen_area_pages.py` — events.json→SEO用エリア別ページ（都道府県2階層 /area/<pref>/<slug>・冪等全再生成。都道府県判定はPREFS逆引き＋address接頭辞。未知エリアは警告スキップ→PREFSに追記。旧フラットURL(/area/nakano等)は_redirects＋橋渡しページの二重化で新URLへ誘導。sitemapはworker.jsがarea/areas.jsonのpaths参照で自動追随）
 - `sources.json` — 巡回ソース定義（追加はここに）
 - `SCHEMA.md` — 確定スキーマ（必須/推奨/任意・個別ページ表示先）
 
@@ -85,8 +86,11 @@ cd pipeline
 python3 apply_overrides.py ../events.json "$CURATION_CSV_URL" > ../events.tmp.json && mv ../events.tmp.json ../events.json
 # 3. 閲覧用CSV書き出し
 python3 export_csv.py ../events.json > ../events.csv
-# 4. デプロイ（events.json/events.csv/index.html/worker.js）
-python3 deploy.py events.json events.csv index.html worker.js
+# 3.5 SEO用エリア別ページ再生成（都道府県階層 area/<pref>/<slug> + ハブ + areas.json + 旧URL橋渡し + _redirects）
+python3 gen_area_pages.py
+# 4. デプロイ（events.json/events.csv/index.html/worker.js/area配下一式/_redirects）
+#    ディレクトリ指定(area)はミラー同期＝ローカルに無いファイルはリポジトリから削除される
+python3 deploy.py events.json events.csv index.html worker.js area _redirects
 ```
 
 ### 人の関わり（毎日ではない・任意）
@@ -103,6 +107,7 @@ python3 deploy.py events.json events.csv index.html worker.js
 - `CURATION_CSV_URL` … キュレーションSheetの公開CSV URL（env or deploy設定）。未設定なら overrides 0件で素通し。
 
 ## 注意
+- **日別時間ルール**: 複数日開催で日ごとに時間が違うイベントは、descに日別時間を明記し、timeフィールドは直近開催日（開催中は当日）の時間へ毎日の更新時に切り替える。
 - index.htmlはローカルが最新のことがある（GitHub側と履歴別）。反映前にローカルを正とする。
 - 中止・延期情報も巡回時に拾い、該当既存イベントがあればfeatureに反映 or 削除判断。
 - 将来方向: 投稿型（主催者からの情報受付）への移行を優先検討（別途）。
