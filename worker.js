@@ -234,7 +234,7 @@ function renderEventPage(e, events) {
   const evUrl = `${ORIGIN}/event/${e.eid}`;
   const inviteText = `【盆踊りのお誘い】\nShall we BON dance?\n${e.kai ? "第" + e.kai + "回 " : ""}${e.name}\n${dateRange(e)}\n\nおどったー｜日本最大級の盆踊り情報サイト\n${evUrl}`;
   const SH = {
-    name: e.name, date: dateRange(e), venue: e.venue || "調査中",
+    name: e.name, date: dateRange(e), venue: e.venue || "調査中", time: e.time || "時間調査中",
     station: e.station || "", area: e.area || "", kai: e.kai ? ("第" + e.kai + "回 ") : "",
     url: evUrl, invite: inviteText
   };
@@ -406,7 +406,7 @@ x.font="800 54px 'M PLUS Rounded 1c','Hiragino Sans',sans-serif";x.fillStyle="rg
 x.fillStyle="#fff";rr(x,70,660,940,600,40);x.fill();x.textAlign="left";x.fillStyle="#0f1419";x.font="900 66px 'M PLUS Rounded 1c','Hiragino Sans',sans-serif";
 var yy=wrap(x,SH.kai+SH.name,120,762,800,80)+34;
 function row(label,val){yy+=78;x.fillStyle="#8a94a0";x.font="bold 38px 'M PLUS Rounded 1c','Hiragino Sans',sans-serif";x.fillText(label,120,yy);x.fillStyle="#0f1419";x.font="40px 'M PLUS Rounded 1c','Hiragino Sans',sans-serif";x.fillText(val,300,yy);}
-row("日程",SH.date);row("会場",SH.venue);row("最寄",SH.station+(SH.area?"・"+SH.area:""));return c;}
+row("日程",SH.date);row("踊り始め",SH.time);row("会場",SH.venue);row("最寄",SH.station+(SH.area?"・"+SH.area:""));return c;}
 function renderInvite(){var c=drawCard();var img=document.getElementById("inviteImg");if(img)img.src=c.toDataURL("image/png");window._sf=null;window._blob=null;c.toBlob(function(b){if(!b)return;window._blob=b;if(navigator.canShare){try{var f=new File([b],"odottar.png",{type:"image/png"});if(navigator.canShare({files:[f]}))window._sf=f;}catch(e){}}},"image/png");}
 if(document.fonts&&document.fonts.ready){document.fonts.ready.then(renderInvite);}else{renderInvite();}
 function shareImgFile(){if(window._sf&&navigator.share){navigator.share({files:[window._sf],text:SH.invite}).catch(function(){});}else if(window._blob){var a=document.createElement("a");a.href=URL.createObjectURL(window._blob);a.download="odottar.png";document.body.appendChild(a);a.click();a.remove();}else{toast("画像を保存してください");}}
