@@ -234,7 +234,8 @@ function renderEventPage(e, events) {
   const evUrl = `${ORIGIN}/event/${e.eid}`;
   const inviteText = `【盆踊りのお誘い】\nShall we BON dance?\n${e.kai ? "第" + e.kai + "回 " : ""}${e.name}\n${dateRange(e)}\n\nおどったー｜日本最大級の盆踊り情報サイト\n${evUrl}`;
   const SH = {
-    name: e.name, date: dateRange(e), venue: e.venue || "調査中", time: e.time || "時間調査中",
+    name: e.name, date: dateRange(e), venue: e.venue || "調査中",
+    time: e.time || "時間調査中",
     station: e.station || "", area: e.area || "", kai: e.kai ? ("第" + e.kai + "回 ") : "",
     url: evUrl, invite: inviteText
   };
@@ -382,7 +383,7 @@ function renderEventPage(e, events) {
     <div class="src">変更・中止の場合あり。おでかけ前に公式でご確認ください。</div>
   </div>
   <footer class="foot">
-    <a href="/">盆踊り一覧</a><a href="/guide.html">初心者ガイド</a><a href="/about.html">運営者情報</a><a href="/privacy.html">プライバシーポリシー</a>
+    <a href="/">盆踊り一覧</a><a href="/guide.html">初心者ガイド</a><a href="/about.html">運営者情報</a>
     <div class="footcredit">おどったー｜日本最大級の盆踊り情報サイト</div>
   </footer>
 </div>
