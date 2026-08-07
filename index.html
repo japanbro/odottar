@@ -905,6 +905,32 @@ function currentList(){
 }
 const heartSVG=on=>`<svg viewBox="0 0 24 24" fill="${on?'#f4326e':'none'}" stroke="${on?'#f4326e':'#c3ccd6'}" stroke-width="1.8"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
 const siteLabel=e=>e.siteType==="official"?"主催・公式サイト":"詳細・関連サイト";
+/* 場所ざっくり表示: 「東京都○区 〇〇駅」(区・駅は取れた分だけ表示) */
+function stationName(e){
+  let s=String(e.station||"").trim();
+  if(!s)return"";
+  const m=s.match(/[｢「]([^｣」]+)[｣」]/);
+  let n;
+  if(m)n=m[1];
+  else{
+    let seg=s.split(/[\/／]/)[0].trim();
+    if(/\s/.test(seg)){const p=seg.split(/\s+/);n=p[p.length-1];}
+    else n=seg.split(/[･・、,]/)[0].trim();
+  }
+  const i=n.indexOf("駅");
+  if(i>=0)n=n.slice(0,i);
+  n=n.replace(/[（(].*$/,"").trim();
+  return n?n+"駅":"";
+}
+function areaLabel(e){
+  let a=String(e.area||"").trim();
+  if(!a)return"";
+  const parts=a.split(/[･・]/);a=parts[parts.length-1].trim();
+  if(/^(東京都|北海道|.{2,3}[県府])/.test(a))return a;
+  return"東京都"+a;
+}
+function locShort(e){return[areaLabel(e),stationName(e)].filter(Boolean).join(" ");}
+const locHTML=e=>{const l=locShort(e);return l?"・"+H(l):"";};
 function renderHero(){
   const el=document.getElementById("hero");
   const up=VISIBLE.filter(e=>["live","week","soon"].includes(statusOf(e))).sort((a,b)=>likeCount(b)-likeCount(a));
@@ -914,7 +940,7 @@ function renderHero(){
   el.innerHTML=`<h2>これから開催の人気TOP3</h2>`+top.map((e,i)=>`
     <div class="hrow" onclick="openEvent('${H(e.name).replace(/\\/g,"\\\\").replace(/&#39;/g,"\\'")}')">
       <div class="hrank">${i+1}</div>
-      <div class="hn2">${H(e.name)} <span class="hd">${longDate(e)}・${H(e.station)}</span></div>
+      <div class="hn2">${H(e.name)} <span class="hd">${longDate(e)}${locHTML(e)}</span></div>
       <div class="hlike">♡${likeCount(e)}</div>
     </div>`).join("");
 }
@@ -935,7 +961,7 @@ function renderLanding(){
   el.style.display="block";
   el.innerHTML='<div class="lph">今週開催の人気の盆踊り</div>'+top.map(e=>{
     const esc=H(e.name).replace(/\\/g,"\\\\").replace(/&#39;/g,"\\'");
-    return `<div class="lrow"><div class="lri" onclick="openEvent('${esc}')"><div class="lrt">${H(e.name)}</div><div class="lrm">${longDate(e)}・${H(e.station)}</div></div><button class="lrb" onclick="shareSheet('${esc}')">誘う</button></div>`;
+    return `<div class="lrow"><div class="lri" onclick="openEvent('${esc}')"><div class="lrt">${H(e.name)}</div><div class="lrm">${longDate(e)}${locHTML(e)}</div></div><button class="lrb" onclick="shareSheet('${esc}')">誘う</button></div>`;
   }).join("");
 }
 function scrollToList(){document.getElementById("bar").scrollIntoView({behavior:"smooth"});}
@@ -965,7 +991,7 @@ function render(){
         <div class="dt${e.start?'':' none'}">${shortDate(e)}</div>
         <div class="nm">
           <div class="t">${e.pick?'<span class="pickbdg">イチオシ</span>':''}${H(e.name)}</div>
-          <div class="s"><span class="bdg ${st.c}">${st.t}</span>${longDate(e)}・${H(e.station)}</div>
+          <div class="s"><span class="bdg ${st.c}">${st.t}</span>${longDate(e)}${locHTML(e)}</div>
         </div>
         <button class="like ${liked?'on':''}" onclick="event.stopPropagation();addLike('${e.eid}',this)" aria-label="行きたい">
           ${heartSVG(liked)}<span class="hn">${likeCount(e)}</span>
