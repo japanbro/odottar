@@ -139,26 +139,44 @@ function mapUrl(e) {
 }
 
 function eventJsonLd(e) {
+  const evUrl = `${ORIGIN}/event/${e.eid}`;
   const ld = {
     "@context": "https://schema.org",
     "@type": "Event",
     name: e.name,
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    eventStatus: "https://schema.org/EventScheduled",
     location: {
       "@type": "Place",
       name: e.venue || e.name,
       address: { "@type": "PostalAddress", streetAddress: e.address || undefined, addressLocality: e.area || "", addressCountry: "JP" }
     },
-    url: `${ORIGIN}/event/${e.eid}`,
+    url: evUrl,
     isAccessibleForFree: e.fee !== "有料"
   };
   if (e.start) ld.startDate = e.time ? `${e.start}T${e.time}:00+09:00` : e.start;
   if (e.end || e.start) ld.endDate = e.end || e.start;
   if (e.lat && e.lng) ld.location.geo = { "@type": "GeoCoordinates", latitude: e.lat, longitude: e.lng };
-  if (e.organizer) ld.organizer = { "@type": "Organization", name: e.organizer };
-  const img = e.image || (/\.pdf(\?|#|$)/i.test(e.poster || "") ? "" : e.poster);
-  if (img) ld.image = img;
-  if (e.desc || e.feature) ld.description = e.desc || e.feature;
+  if (e.organizer) ld.organizer = { "@type": "Organization", name: e.organizer, url: e.site || undefined };
+
+  // image: 推奨項目。常に付与（イベント画像→PDF以外のポスター→サイト共通OGP）
+  const posterImg = /\.pdf(\?|#|$)/i.test(e.poster || "") ? "" : e.poster;
+  ld.image = [e.image || posterImg || `${ORIGIN}/assets/ogp.png`];
+
+  // description: 推奨項目。常に付与（desc→feature→自動生成）
+  const songs = splitSongs(e.songs);
+  ld.description = (e.desc || e.feature ||
+    `${e.name}（${dateRange(e)}）の盆踊り情報。${e.venue ? "会場は" + e.venue + "。" : ""}${e.time ? "踊り開始" + e.time + "〜。" : ""}${songs.length ? "踊れる曲: " + songs.slice(0, 4).join("・") + "。" : ""}屋台・アクセス・地図はおどったーで。`
+  ).slice(0, 300);
+
+  // performer: 推奨項目。盆踊りの運営/出演団体（主催があれば主催、なければイベント名）
+  ld.performer = { "@type": "PerformingGroup", name: e.organizer || e.name };
+
+  // offers: 推奨項目。盆踊りは大半が入場無料（0円）。有料は公式へ誘導
+  ld.offers = (e.fee !== "有料")
+    ? { "@type": "Offer", url: e.site || evUrl, price: "0", priceCurrency: "JPY", availability: "https://schema.org/InStock", validFrom: e.start || undefined }
+    : { "@type": "Offer", url: e.site || evUrl, availability: "https://schema.org/InStock", validFrom: e.start || undefined };
+
   if (e.site) ld.sameAs = e.site;
   return JSON.stringify(ld);
 }
@@ -364,7 +382,7 @@ function renderEventPage(e, events) {
     <div class="src">変更・中止の場合あり。おでかけ前に公式でご確認ください。</div>
   </div>
   <footer class="foot">
-    <a href="/">盆踊り一覧</a><a href="/about.html">運営者情報</a><a href="/privacy.html">プライバシーポリシー</a>
+    <a href="/">盆踊り一覧</a><a href="/guide.html">初心者ガイド</a><a href="/about.html">運営者情報</a><a href="/privacy.html">プライバシーポリシー</a>
     <div class="footcredit">おどったー｜日本最大級の盆踊り情報サイト</div>
   </footer>
 </div>
@@ -426,6 +444,7 @@ async function getSitemap(env, request) {
   const events = (await loadEvents(env, request)) || [];
   const urls = [
     { loc: `${ORIGIN}/`, changefreq: "daily", priority: "1.0" },
+    { loc: `${ORIGIN}/guide.html`, changefreq: "monthly", priority: "0.8" },
     { loc: `${ORIGIN}/about.html`, changefreq: "yearly", priority: "0.3" },
     { loc: `${ORIGIN}/privacy.html`, changefreq: "yearly", priority: "0.3" },
     ...events.map(e => ({ loc: `${ORIGIN}/event/${e.eid}`, changefreq: "weekly", priority: "0.7" }))
