@@ -454,7 +454,7 @@ async function getSitemap(env, request) {
     { loc: `${ORIGIN}/about.html`, changefreq: "yearly", priority: "0.3" },
     { loc: `${ORIGIN}/privacy.html`, changefreq: "yearly", priority: "0.3" },
     ...(areas.length ? [{ loc: `${ORIGIN}/area/`, changefreq: "daily", priority: "0.8" }] : []),
-    ...areas.map(a => ({ loc: `${ORIGIN}/area/${a.slug}.html`, changefreq: "daily", priority: "0.8" })),
+    ...areas.map(a => ({ loc: `${ORIGIN}/area/${a.slug}`, changefreq: "daily", priority: "0.8" })),
     ...events.map(e => ({ loc: `${ORIGIN}/event/${e.eid}`, changefreq: "weekly", priority: "0.7" }))
   ];
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
