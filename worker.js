@@ -82,6 +82,15 @@ async function postHit(env, request) {
 let EVENTS_CACHE = null;
 let SONG_FREQ = null;
 
+// feeから価格を判定: "0"=無料(未記載含む) / "500"等=金額 / null=金額不明の有料・チケット制等
+function feePrice(e) {
+  const s = String(e.fee || "").trim();
+  if (!s || s.includes("無料")) return "0";
+  const m = s.match(/(\d[\d,]*)\s*円/);
+  if (m) return m[1].replace(/,/g, "");
+  return null;
+}
+
 async function loadEvents(env, request) {
   if (EVENTS_CACHE) return EVENTS_CACHE;
   const u = new URL(request.url);
@@ -152,7 +161,7 @@ function eventJsonLd(e) {
       address: { "@type": "PostalAddress", streetAddress: e.address || undefined, addressLocality: e.area || "", addressCountry: "JP" }
     },
     url: evUrl,
-    isAccessibleForFree: e.fee !== "有料"
+    isAccessibleForFree: feePrice(e) === "0"
   };
   if (e.start) ld.startDate = e.time ? `${e.start}T${e.time}:00+09:00` : e.start;
   if (e.end || e.start) ld.endDate = e.end || e.start;
@@ -172,10 +181,13 @@ function eventJsonLd(e) {
   // performer: 推奨項目。盆踊りの運営/出演団体（主催があれば主催、なければイベント名）
   ld.performer = { "@type": "PerformingGroup", name: e.organizer || e.name };
 
-  // offers: 推奨項目。盆踊りは大半が入場無料（0円）。有料は公式へ誘導
-  ld.offers = (e.fee !== "有料")
-    ? { "@type": "Offer", url: e.site || evUrl, price: "0", priceCurrency: "JPY", availability: "https://schema.org/InStock", validFrom: e.start || undefined }
-    : { "@type": "Offer", url: e.site || evUrl, availability: "https://schema.org/InStock", validFrom: e.start || undefined };
+  // offers: price/priceCurrency必須。金額不明の有料(feePrice=null)は虚偽の0円を避けoffersを出さない
+  {
+    const p = feePrice(e);
+    if (p !== null) {
+      ld.offers = { "@type": "Offer", url: e.site || evUrl, price: p, priceCurrency: "JPY", availability: "https://schema.org/InStock", validFrom: e.start || undefined };
+    }
+  }
 
   if (e.site) ld.sameAs = e.site;
   return JSON.stringify(ld);
